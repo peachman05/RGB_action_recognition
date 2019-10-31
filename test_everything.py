@@ -2,15 +2,15 @@ from data_helper import readfile_to_dict
 import numpy as np
 import os
 
-from keras import Sequential
-from keras.layers import CuDNNLSTM, LSTM
-# from tensorflow.python.keras.layers import CuDNNLSTM
-from keras.layers import Dense, Input, TimeDistributed, Conv2D
-from keras.layers import Dropout, concatenate, Flatten, GlobalAveragePooling2D
-from keras.regularizers import l2
-from keras.models import Model
-from tensorflow.python.keras import optimizers
-from keras.applications import MobileNet
+# from keras import Sequential
+# from keras.layers import CuDNNLSTM, LSTM
+# # from tensorflow.python.keras.layers import CuDNNLSTM
+# from keras.layers import Dense, Input, TimeDistributed, Conv2D
+# from keras.layers import Dropout, concatenate, Flatten, GlobalAveragePooling2D
+# from keras.regularizers import l2
+# from keras.models import Model
+# from tensorflow.python.keras import optimizers
+# from keras.applications import MobileNet
 
 # dim = (10,10)
 # X = np.empty((2, 4, *dim, 1))
@@ -112,26 +112,9 @@ print(Y)
 # print(new_f.shape)
 # frame_window = np.append(frame_window, new_f, axis=0 )
 # print(frame_window.shape)
-import cv2
-image = cv2.imread('frame0.jpg')
-print('test')
-
-def testDevice(source):
-   cap = cv2.VideoCapture(source) 
-   if cap.isOpened():
-       print('open: ', source)
-
-for i in range(0,100):
-    testDevice(i)
-# testDevice(0) # no printout
-# testDevice(1) # prints message
-
-# cap = cv2.VideoCapture(1) 
-
-# while(cap.isOpened()):
-#     ret, frame = cap.read()
-#     cv2.imshow('Frame',frame)
-#     if cv2.waitKey(25) & 0xFF == ord('q'):
-#         break 
- 
-# cap.release()
+# x = np.array([0]*25)
+frame_window = np.empty((0, 3, 25))
+new_f = np.random.randint(0, 100, size=(3, 25))
+new_f = np.reshape(new_f, (1, *new_f.shape))
+frame_window = np.append(frame_window, new_f, axis=0 )
+print(frame_window.shape)
