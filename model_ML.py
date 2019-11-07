@@ -4,7 +4,7 @@ from keras.layers import CuDNNLSTM, LSTM
 from keras.layers import Dense, Input, TimeDistributed, Conv2D
 from keras.layers import Dropout, concatenate, Flatten, GlobalAveragePooling2D, MaxPooling2D
 from tensorflow.python.keras import optimizers
-from keras.applications import MobileNetV2
+from keras.applications import MobileNet,MobileNetV2
 
 from keras.regularizers import l2
 from keras.models import Model

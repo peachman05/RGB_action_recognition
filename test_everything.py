@@ -1,111 +1,9 @@
 from data_helper import readfile_to_dict
 import numpy as np
 import os
-
-# from keras import Sequential
-# from keras.layers import CuDNNLSTM, LSTM
-# # from tensorflow.python.keras.layers import CuDNNLSTM
-# from keras.layers import Dense, Input, TimeDistributed, Conv2D
-# from keras.layers import Dropout, concatenate, Flatten, GlobalAveragePooling2D
-# from keras.regularizers import l2
-# from keras.models import Model
-# from tensorflow.python.keras import optimizers
-# from keras.applications import MobileNet
-
-# dim = (10,10)
-# X = np.empty((2, 4, *dim, 1))
-
-# t = np.random.randint(0, 100, size=(10,10))
-# new_image = np.reshape(t, (*dim, 1) )
-# X[0,0,:] = t
-# print(new_image.shape)
-
-# path_dataset = 'F:\\Master Project\\Dataset\\KARD-split-frames'
-# path_file = '\\a01\\a01_s01_e01'
-
-# dir = path_dataset+path_file
-
-# list = os.listdir(dir) # dir is your directory path
-# number_files = len(list)
-# print(number_files)
-
-# d1 = readfile_to_dict("trainlist.txt")
-# d2 = readfile_to_dict("testlist.txt")
-# print(len(d1))
-# all = d1.copy()
-# all.update(d2)
-
-# print(list(d1.keys()))
-# print(len(d2))
-# print(len(all))
-
-# indexes = np.arange(105)
-# # n = np.random.shuffle(indexes)
-# # print(indexes)
-# batch_size = 10
-# index = 10
-# indexes2 = indexes[index*batch_size:(index+1)*batch_size]
-# print(indexes2)
-
-# X = np.random.randint(0, 100, size=(4, 224, 224, 3)) # 4=batch size, (8,8,3) image
-# Y = np.array([0, 0, 1, 2])
-# print(X.shape)
-# print(Y)
-
-X = np.random.randint(0, 100, size=(4, 5, 224, 224, 3)) # 4=batch size, 5 sequence, (8,8,3) image
-Y = np.array([0, 0, 1, 2])
-print(X.shape)
-print(Y)
-
-# model = Sequential()
-# model.add(MobileNet(weights='imagenet',include_top=False))
-# model.add(GlobalAveragePooling2D())
-# model.add(Dense(4, activation='softmax'))
-# sgd = optimizers.SGD(lr=0.1, momentum=0.0, decay=0.01, nesterov=False)
-# model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-
-# dim = (224,224)
-# n_channels = 3
-# n_sequence = 5
-# n_output = 4
-
-# model = Sequential()
-# # after having Conv2D...
-# model.add( 
-#     TimeDistributed(
-#         MobileNet(weights='imagenet',include_top=False), 
-#         input_shape=(n_sequence, *dim, n_channels) # 5 images...
-#     )
-# )
-# model.add(
-#     TimeDistributed(
-#         GlobalAveragePooling2D() # Or Flatten()
-#     )
-# )
-# # previous layer gives 5 outputs, Keras will make the job
-# # to configure LSTM inputs shape (5, ...)
-# model.add(
-#     CuDNNLSTM(64, return_sequences=False)
-# )
-# # and then, common Dense layers... Dropout...
-# # up to you
-# model.add(Dense(64, activation='relu'))
-# model.add(Dropout(.5))
-
-# model.add(Dense(24, activation='relu'))
-# model.add(Dropout(.5))
-# # For example, for 3 outputs classes 
-# model.add(Dense(n_output, activation='softmax'))
-# sgd = optimizers.SGD(lr=0.1, momentum=0.0, decay=0.01, nesterov=False)
-# model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-
-# print(model.summary())
-# model.fit(X,Y)
-# dim = (224,224)
-# n_sequence = 20
-# n_channels = 3
-# frame_window = np.empty((0, *dim, n_channels))
-# print(frame_window.shape)
+import cv2
+from model_ML import create_model_pretrain
+import matplotlib.pyplot as plt
 
 # new_f = np.random.randint(0, 100, size=(224, 224, 3))
 # new_f = np.reshape(new_f, (1, *new_f.shape))
@@ -113,8 +11,80 @@ print(Y)
 # frame_window = np.append(frame_window, new_f, axis=0 )
 # print(frame_window.shape)
 # x = np.array([0]*25)
-frame_window = np.empty((0, 3, 25))
-new_f = np.random.randint(0, 100, size=(3, 25))
-new_f = np.reshape(new_f, (1, *new_f.shape))
-frame_window = np.append(frame_window, new_f, axis=0 )
-print(frame_window.shape)
+
+# name = 'F:\\Master Project\\Dataset\\KARD-split\\a01\\a01_s01_e02.mp4'
+# cap = cv2.VideoCapture(name)
+# length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+# print( length )
+# cap.set(cv2.CAP_PROP_POS_FRAMES, 123)
+
+# while True:
+#     ret, frame = cap.read()
+    
+#     print(frame)
+#     if ret == False:
+#         break
+#     if cv2.waitKey(20) & 0xFF == ord('q') :
+#         break
+#     cv2.imshow("Video", frame)
+
+# cv2.destroyAllWindows()
+# test = {'test':1, 'test':2}
+# print(test)
+
+
+dim = (224,224)
+n_sequence = 20
+n_channels = 3
+n_output = 4
+batch_size = 1
+def get_sampling_frame( len_frames):   
+    '''
+    Sampling n_sequence frame from video file
+    Output: n_sequence index from sampling algorithm 
+    '''     
+    
+    random_sample_range = 1
+    # Randomly choose sample interval and start frame
+    sample_interval = 1 #np.random.randint(1, random_sample_range + 1)
+    start_i = np.random.randint(0, len_frames - sample_interval * n_sequence + 1)
+    
+    # Extract frames as tensors
+    index_sampling = []
+    end_i = sample_interval * n_sequence + start_i
+    for i in range(start_i, end_i, sample_interval):
+        if len(index_sampling) < n_sequence:
+            index_sampling.append(i)
+    
+    return index_sampling
+
+
+X = np.empty((batch_size, n_sequence, *dim, n_channels)) # X : (n_samples, *dim, n_channels)
+Y = np.empty((batch_size), dtype=int)
+
+# for i, ID in enumerate(list_IDs_temp):  # ID is name of file
+
+action = 'pass'
+path_file = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'+action+'\\'+action+'04.mp4'
+cap = cv2.VideoCapture(path_file)
+length_file = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) # get length of frames
+print(length_file)
+index_sampling = get_sampling_frame(length_file) # get index to sampling         
+for j, n_pic in enumerate(index_sampling):
+    cap.set(cv2.CAP_PROP_POS_FRAMES, n_pic)
+    ret, frame = cap.read()
+    new_image = cv2.resize(frame, dim)
+    new_image = new_image/255.0                
+    X[0,j,:,:,:] = new_image
+    print(j)
+
+    cv2.imshow('Frame',frame)
+    # imgplot = plt.imshow(frame)
+    # plt.show()
+    cv2.waitKey(500)
+
+# Y[i] = labels[ID]
+cap.release()
+# for i in range(15):
+    #  = new_image
+    # cv2.imshow('Frame',X[0,i,:,:,:])

@@ -25,8 +25,13 @@ type_file = "dataset"
 if type_file == 'dataset':
     # path_save = "F:/Master Project/Dataset/Extract_data/25 joints"
     # type_data = 'train'
-
-    data = np.load('dribble00.npy')
+    path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
+    action_list = ['dribble','shoot','pass','stand']
+    action = action_list[2]
+    path_save = path_dataset +'\\'+action+'\\'+action
+    path_file = path_save+'00.npy'
+    print(path_file)
+    data = np.load(path_file)
 
     data_plot = data 
     print('len:', data_plot.shape[0])

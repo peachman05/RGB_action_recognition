@@ -1,6 +1,5 @@
 import numpy as np
 
-from keras.models import Sequential
 from data_gen import DataGenerator
 from data_helper import readfile_to_dict
 from model_ML import create_model_pretrain

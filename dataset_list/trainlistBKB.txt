@@ -1,0 +1,8 @@
+dribble/dribble00.mp4   0
+shoot/shoot00.mp4       1
+pass/pass00.mp4         2
+stand/stand00.mp4       3
+dribble/dribble02.mp4   0
+shoot/shoot02.mp4       1
+pass/pass02.mp4         2
+stand/stand02.mp4       3

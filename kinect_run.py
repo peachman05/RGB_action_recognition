@@ -7,10 +7,11 @@ from model_ML import create_model_pretrain
 import time
 
 dim = (224,224)
-n_sequence = 20
+n_sequence = 15
 n_channels = 3
 n_output = 4
-weights_path = 'mobileNet-KARD-41-0.83.hdf5' 
+# weights_path = 'pretrain/mobileNet-KARD-41-0.83.hdf5' 
+weights_path = 'mobileNetV2-BKB-05-1.00.hdf5'
 
 ### load model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output)

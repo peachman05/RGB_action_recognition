@@ -9,14 +9,16 @@ import matplotlib.animation as animation
 import cv2
 import numpy as np
 import time
+import winsound
 from skeleton_helper import read_skeleton, get_sequence_file_name
 
 ##################################
 ############# define #############
 ##################################
+run_time = 90
 path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
 action_list = ['dribble','shoot','pass','stand']
-action = action_list[0]
+action = action_list[3]
 path_save = path_dataset +'\\'+action+'\\'+action
 
 _kinect = PyKinectRuntime.PyKinectRuntime(PyKinectV2.FrameSourceTypes_Color | PyKinectV2.FrameSourceTypes_Body)
@@ -25,9 +27,10 @@ new_w = int(1920/3)
 new_h = int(1080/3)
 
 name_video = get_sequence_file_name(path_save,'.mp4')
-out = cv2.VideoWriter(name_video, fourcc, 40.0, (new_w, new_h))
+out = cv2.VideoWriter(name_video, fourcc, 30.0, (new_w, new_h))
 # f = open(action+'.txt', 'w') 
 frame_all = np.empty((0, 3, 25)) # seq, dim0, dim1, channel
+start_time = None 
 
 ##################################
 ############# fucntion ###########
@@ -51,11 +54,17 @@ def save_video(_kinect):
     cv2.imshow('frame',frame_new)            
 
 def update_lines(num, _kinect, lines, bone_list, my_ax):    
-    # global start_time
+    global start_time
     global frame_all
-    # dif_t = (time.time() - start_time)
-    # if dif_t > 0:
-    #     print("FPS: ", 1.0 / dif_t )
+    print(num)
+    
+
+    if time.time() - start_time > run_time:
+        # for i in range(10):
+        winsound.Beep(3000, 200)
+            # time.sleep(1)  
+
+
     if _kinect.has_new_color_frame():
         save_video(_kinect)
     
@@ -79,7 +88,9 @@ def update_lines(num, _kinect, lines, bone_list, my_ax):
             t.set_position((x_,y_))
             t.set_text(str(i+1))
 
-    
+    # dif_t = (time.time() - start_time)
+    # if dif_t > 0:
+    #     print("FPS: ", 1.0 / dif_t )
     # start_time = time.time()
 
     return lines, annots
@@ -113,8 +124,12 @@ lines = [ax.plot([x[bone[0]], x[bone[1]]],
 #countdown
 for i in range(5,0,-1):
     print("start in:", i)
-    time.sleep(1)
+    winsound.Beep(1000, 100)
+    time.sleep(1)    
     
+winsound.Beep(2000, 100)    
+
+start_time = time.time()
 
 line_ani = animation.FuncAnimation(fig, update_lines, None,
                                    fargs=(_kinect, lines, bone_list, ax),
