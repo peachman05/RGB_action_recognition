@@ -43,6 +43,13 @@ validation_generator = DataGeneratorBKB(test_keys , labels, **params, type_gen='
 # # Design model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output)
 
+load_model = True
+start_epoch = 1
+if load_model:
+    weights_path = 'mobileNetV2-BKB-3ds-48-0.55.hdf5'    
+    start_epoch = 34
+    model.load_weights(weights_path)
+
 ## Set callback
 validate_freq = 2
 filepath= detail_weight+"-{epoch:02d}-{val_accuracy:.2f}.hdf5"
@@ -54,5 +61,6 @@ model.fit_generator(generator=training_generator,
                     validation_data=validation_generator,
                     epochs=300,
                     callbacks=callbacks_list,   
-                    max_queue_size=1,                 
+                    max_queue_size=1,
+                    initial_epoch=start_epoch,                 
                     validation_freq=validate_freq)

@@ -11,7 +11,7 @@ n_sequence = 15
 n_channels = 3
 n_output = 4
 # weights_path = 'pretrain/mobileNet-KARD-41-0.83.hdf5' 
-weights_path = 'mobileNetV2-BKB-05-1.00.hdf5'
+weights_path = 'mobileNetV2-BKB-3ds-48-0.55.hdf5'
 
 ### load model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output)
@@ -42,7 +42,7 @@ while(True):
             print("action:", predict_ind)
 
             frame_window = frame_window[1:n_sequence]
-        cv2.imshow('Frame',frame_re)
+        # cv2.imshow('Frame',frame_re)
         end_time = time.time()
         diff_time =end_time - start_time
         print("FPS:",1/diff_time)

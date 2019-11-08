@@ -44,9 +44,9 @@ def get_sampling_frame( len_frames):
     Output: n_sequence index from sampling algorithm 
     '''     
     
-    random_sample_range = 1
+    random_sample_range = 4
     # Randomly choose sample interval and start frame
-    sample_interval = 1 #np.random.randint(1, random_sample_range + 1)
+    sample_interval = 4 #np.random.randint(1, random_sample_range + 1)
     start_i = np.random.randint(0, len_frames - sample_interval * n_sequence + 1)
     
     # Extract frames as tensors
@@ -64,8 +64,8 @@ Y = np.empty((batch_size), dtype=int)
 
 # for i, ID in enumerate(list_IDs_temp):  # ID is name of file
 
-action = 'pass'
-path_file = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'+action+'\\'+action+'04.mp4'
+action = 'stand'
+path_file = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'+action+'\\'+action+'02.mp4'
 cap = cv2.VideoCapture(path_file)
 length_file = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) # get length of frames
 print(length_file)
