@@ -1,0 +1,206 @@
+Epoch 00001: val_accuracy improved from -inf to 0.27097, saving model to mobileNet-UCF-15ts-01-0.23-0.27.hdf5
+Epoch 2/200
+401/401 [==============================] - 190s 475ms/step - loss: 1.6249 - accuracy: 0.2469 - val_loss: 1.6980 - val_accuracy: 0.1935
+
+Epoch 00002: val_accuracy did not improve from 0.27097
+Epoch 3/200
+401/401 [==============================] - 190s 474ms/step - loss: 1.5493 - accuracy: 0.2793 - val_loss: 0.9330 - val_accuracy: 0.2839
+
+Epoch 00003: val_accuracy improved from 0.27097 to 0.28387, saving model to mobileNet-UCF-15ts-03-0.28-0.28.hdf5
+Epoch 4/200
+401/401 [==============================] - 190s 474ms/step - loss: 1.5300 - accuracy: 0.2618 - val_loss: 1.6484 - val_accuracy: 0.2839
+
+Epoch 00004: val_accuracy did not improve from 0.28387
+Epoch 5/200
+401/401 [==============================] - 191s 475ms/step - loss: 1.5159 - accuracy: 0.2219 - val_loss: 1.1916 - val_accuracy: 0.2258
+
+Epoch 00005: val_accuracy did not improve from 0.28387
+Epoch 6/200
+401/401 [==============================] - 200s 499ms/step - loss: 1.4931 - accuracy: 0.2444 - val_loss: 1.0706 - val_accuracy: 0.2839
+
+Epoch 00006: val_accuracy did not improve from 0.28387
+Epoch 7/200
+401/401 [==============================] - 190s 475ms/step - loss: 1.4818 - accuracy: 0.2244 - val_loss: 1.2953 - val_accuracy: 0.2645
+
+Epoch 00007: val_accuracy did not improve from 0.28387
+Epoch 8/200
+401/401 [==============================] - 190s 474ms/step - loss: 1.4575 - accuracy: 0.2743 - val_loss: 1.1610 - val_accuracy: 0.2194
+
+Epoch 00008: val_accuracy did not improve from 0.28387
+Epoch 9/200
+401/401 [==============================] - 190s 475ms/step - loss: 1.4670 - accuracy: 0.2594 - val_loss: 1.3440 - val_accuracy: 0.2710
+
+Epoch 00009: val_accuracy did not improve from 0.28387
+Epoch 10/200
+401/401 [==============================] - 191s 476ms/step - loss: 1.4621 - accuracy: 0.2544 - val_loss: 1.2956 - val_accuracy: 0.1871
+
+Epoch 00010: val_accuracy did not improve from 0.28387
+Epoch 11/200
+401/401 [==============================] - 191s 477ms/step - loss: 1.4517 - accuracy: 0.2643 - val_loss: 1.4527 - val_accuracy: 0.2258
+
+Epoch 00011: val_accuracy did not improve from 0.28387
+Epoch 12/200
+401/401 [==============================] - 191s 476ms/step - loss: 1.4611 - accuracy: 0.2469 - val_loss: 1.4816 - val_accuracy: 0.2258
+
+Epoch 00012: val_accuracy did not improve from 0.28387
+Epoch 13/200
+401/401 [==============================] - 191s 476ms/step - loss: 1.4579 - accuracy: 0.2444 - val_loss: 1.5720 - val_accuracy: 0.3548
+
+Epoch 00013: val_accuracy improved from 0.28387 to 0.35484, saving model to mobileNet-UCF-15ts-13-0.24-0.35.hdf5
+Epoch 14/200
+401/401 [==============================] - 191s 475ms/step - loss: 1.4383 - accuracy: 0.2195 - val_loss: 1.7420 - val_accuracy: 0.2645
+
+Epoch 00014: val_accuracy did not improve from 0.35484
+Epoch 15/200
+401/401 [==============================] - 191s 475ms/step - loss: 1.4352 - accuracy: 0.2419 - val_loss: 1.4096 - val_accuracy: 0.2839
+
+Epoch 00015: val_accuracy did not improve from 0.35484
+Epoch 16/200
+401/401 [==============================] - 191s 475ms/step - loss: 1.4408 - accuracy: 0.2344 - val_loss: 1.1999 - val_accuracy: 0.3032
+
+Epoch 00016: val_accuracy did not improve from 0.35484
+Epoch 17/200
+401/401 [==============================] - 191s 475ms/step - loss: 1.4207 - accuracy: 0.2544 - val_loss: 1.3715 - val_accuracy: 0.3097
+
+Epoch 00017: val_accuracy did not improve from 0.35484
+Epoch 18/200
+401/401 [==============================] - 190s 475ms/step - loss: 1.4025 - accuracy: 0.2868 - val_loss: 1.3038 - val_accuracy: 0.3677
+
+Epoch 00018: val_accuracy improved from 0.35484 to 0.36774, saving model to mobileNet-UCF-15ts-18-0.29-0.37.hdf5
+Epoch 19/200
+401/401 [==============================] - 191s 475ms/step - loss: 1.4037 - accuracy: 0.2943 - val_loss: 1.0260 - val_accuracy: 0.3355
+
+Epoch 00019: val_accuracy did not improve from 0.36774
+Epoch 20/200
+401/401 [==============================] - 191s 476ms/step - loss: 1.3277 - accuracy: 0.3516 - val_loss: 1.6605 - val_accuracy: 0.2452
+
+Epoch 00020: val_accuracy did not improve from 0.36774
+Epoch 21/200
+401/401 [==============================] - 191s 476ms/step - loss: 1.3567 - accuracy: 0.3267 - val_loss: 2.1745 - val_accuracy: 0.3871
+
+Epoch 00021: val_accuracy improved from 0.36774 to 0.38710, saving model to mobileNet-UCF-15ts-21-0.33-0.39.hdf5
+Epoch 22/200
+401/401 [==============================] - 191s 475ms/step - loss: 1.3098 - accuracy: 0.3890 - val_loss: 1.1417 - val_accuracy: 0.3548
+
+Epoch 00022: val_accuracy did not improve from 0.38710
+Epoch 23/200
+401/401 [==============================] - 191s 475ms/step - loss: 1.2380 - accuracy: 0.4264 - val_loss: 1.9758 - val_accuracy: 0.3097
+
+Epoch 00023: val_accuracy did not improve from 0.38710
+Epoch 24/200
+401/401 [==============================] - 191s 476ms/step - loss: 1.2057 - accuracy: 0.4289 - val_loss: 1.1176 - val_accuracy: 0.3355
+
+Epoch 00024: val_accuracy did not improve from 0.38710
+Epoch 25/200
+401/401 [==============================] - 191s 476ms/step - loss: 1.2018 - accuracy: 0.4190 - val_loss: 0.1731 - val_accuracy: 0.4000
+
+Epoch 00025: val_accuracy improved from 0.38710 to 0.40000, saving model to mobileNet-UCF-15ts-25-0.42-0.40.hdf5
+Epoch 26/200
+401/401 [==============================] - 191s 476ms/step - loss: 1.0376 - accuracy: 0.5212 - val_loss: 4.0126 - val_accuracy: 0.2516
+
+Epoch 00026: val_accuracy did not improve from 0.40000
+Epoch 27/200
+401/401 [==============================] - 191s 476ms/step - loss: 1.0435 - accuracy: 0.4913 - val_loss: 0.2872 - val_accuracy: 0.4000
+
+Epoch 00027: val_accuracy did not improve from 0.40000
+Epoch 28/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.8480 - accuracy: 0.5960 - val_loss: 1.2251 - val_accuracy: 0.4645
+
+Epoch 00028: val_accuracy improved from 0.40000 to 0.46452, saving model to mobileNet-UCF-15ts-28-0.60-0.46.hdf5
+Epoch 29/200
+401/401 [==============================] - 191s 475ms/step - loss: 0.7975 - accuracy: 0.6359 - val_loss: 1.8271 - val_accuracy: 0.5548
+
+Epoch 00029: val_accuracy improved from 0.46452 to 0.55484, saving model to mobileNet-UCF-15ts-29-0.64-0.55.hdf5
+Epoch 30/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.7347 - accuracy: 0.6733 - val_loss: 0.3090 - val_accuracy: 0.4129
+
+Epoch 00030: val_accuracy did not improve from 0.55484
+Epoch 31/200
+401/401 [==============================] - 193s 482ms/step - loss: 0.6481 - accuracy: 0.6983 - val_loss: 1.0302 - val_accuracy: 0.2968
+
+Epoch 00031: val_accuracy did not improve from 0.55484
+Epoch 32/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.5909 - accuracy: 0.7406 - val_loss: 0.5346 - val_accuracy: 0.3935
+
+Epoch 00032: val_accuracy did not improve from 0.55484
+Epoch 33/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.5533 - accuracy: 0.7581 - val_loss: 3.9125 - val_accuracy: 0.2903
+
+Epoch 00033: val_accuracy did not improve from 0.55484
+Epoch 34/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.5154 - accuracy: 0.7905 - val_loss: 0.7840 - val_accuracy: 0.2581
+
+Epoch 00034: val_accuracy did not improve from 0.55484
+Epoch 35/200
+401/401 [==============================] - 190s 474ms/step - loss: 0.4221 - accuracy: 0.8254 - val_loss: 6.5397 - val_accuracy: 0.3484
+
+Epoch 00035: val_accuracy did not improve from 0.55484
+Epoch 36/200
+401/401 [==============================] - 190s 474ms/step - loss: 0.3923 - accuracy: 0.8379 - val_loss: 0.2117 - val_accuracy: 0.2774
+
+Epoch 00036: val_accuracy did not improve from 0.55484
+Epoch 37/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.3930 - accuracy: 0.8429 - val_loss: 0.2648 - val_accuracy: 0.4516
+
+Epoch 00037: val_accuracy did not improve from 0.55484
+Epoch 38/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.2685 - accuracy: 0.9202 - val_loss: 0.1772 - val_accuracy: 0.4129
+
+Epoch 00038: val_accuracy did not improve from 0.55484
+Epoch 39/200
+401/401 [==============================] - 190s 474ms/step - loss: 0.3071 - accuracy: 0.8878 - val_loss: 2.1234 - val_accuracy: 0.4968
+
+Epoch 00039: val_accuracy did not improve from 0.55484
+Epoch 40/200
+401/401 [==============================] - 190s 474ms/step - loss: 0.2074 - accuracy: 0.9227 - val_loss: 4.9994 - val_accuracy: 0.4387
+
+Epoch 00040: val_accuracy did not improve from 0.55484
+Epoch 41/200
+401/401 [==============================] - 190s 474ms/step - loss: 0.4445 - accuracy: 0.8554 - val_loss: 4.3695 - val_accuracy: 0.4323
+
+Epoch 00041: val_accuracy did not improve from 0.55484
+Epoch 42/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.3735 - accuracy: 0.8753 - val_loss: 0.0742 - val_accuracy: 0.2323
+
+Epoch 00042: val_accuracy did not improve from 0.55484
+Epoch 43/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.5052 - accuracy: 0.8030 - val_loss: 2.8098 - val_accuracy: 0.3419
+
+Epoch 00043: val_accuracy did not improve from 0.55484
+Epoch 44/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.3158 - accuracy: 0.8903 - val_loss: 0.1537 - val_accuracy: 0.3419
+
+Epoch 00044: val_accuracy did not improve from 0.55484
+Epoch 45/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.3742 - accuracy: 0.8703 - val_loss: 0.2183 - val_accuracy: 0.3935
+
+Epoch 00045: val_accuracy did not improve from 0.55484
+Epoch 46/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.2130 - accuracy: 0.9277 - val_loss: 0.3442 - val_accuracy: 0.3290
+
+Epoch 00046: val_accuracy did not improve from 0.55484
+Epoch 47/200
+401/401 [==============================] - 190s 474ms/step - loss: 0.1868 - accuracy: 0.9401 - val_loss: 0.0963 - val_accuracy: 0.3613
+
+Epoch 00047: val_accuracy did not improve from 0.55484
+Epoch 48/200
+401/401 [==============================] - 190s 474ms/step - loss: 0.1123 - accuracy: 0.9726 - val_loss: 11.6186 - val_accuracy: 0.3419
+
+Epoch 00048: val_accuracy did not improve from 0.55484
+Epoch 49/200
+401/401 [==============================] - 190s 474ms/step - loss: 0.0889 - accuracy: 0.9850 - val_loss: 4.7326 - val_accuracy: 0.3548
+
+Epoch 00049: val_accuracy did not improve from 0.55484
+Epoch 50/200
+401/401 [==============================] - 190s 475ms/step - loss: 0.3846 - accuracy: 0.8928 - val_loss: 0.3121 - val_accuracy: 0.2387
+
+Epoch 00050: val_accuracy did not improve from 0.55484
+Epoch 51/200
+401/401 [==============================] - 190s 474ms/step - loss: 0.5217 - accuracy: 0.8404 - val_loss: 2.2893 - val_accuracy: 0.4387
+
+Epoch 00051: val_accuracy did not improve from 0.55484
+Epoch 52/200
+401/401 [==============================] - 191s 476ms/step - loss: 0.1743 - accuracy: 0.9601 - val_loss: 2.9105 - val_accuracy: 0.4581
+
+Epoch 00052: val_accuracy did not improve from 0.55484
+Epoch 53/200

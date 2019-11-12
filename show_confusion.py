@@ -9,14 +9,14 @@ from model_ML import create_model_pretrain
 from data_helper import readfile_to_dict
 
 dim = (224,224)
-n_sequence = 20
+n_sequence = 15
 n_channels = 3
 n_output = 4
-# path_dataset = 'F:\\Master Project\\Dataset\\UCF-101-Temp-frames\\'
-path_dataset = 'F:\\Master Project\\Dataset\\KARD-split-frames\\'
+path_dataset = 'F:\\Master Project\\Dataset\\UCF-101-Temp-frames\\'
+# path_dataset = 'F:\\Master Project\\Dataset\\KARD-split-frames\\'
 
 params = {'dim': dim,
-          'batch_size': 2,
+          'batch_size': 1,
         #   'n_classes': 6,
           'n_sequence': n_sequence,
           'n_channels': n_channels,
@@ -24,21 +24,21 @@ params = {'dim': dim,
           'shuffle': False}
 
 ## dataset
-test_d = readfile_to_dict("testlist02.txt")
+test_d = readfile_to_dict("dataset_list/trainlistUCF.txt")
 labels = test_d.copy()
 partition = {'validation': list(test_d.keys()) } # IDs
 validation_generator = DataGenerator(partition['validation'] , labels, **params, type_gen='test')
 predict_generator = DataGenerator(partition['validation'] , labels, **params, type_gen='predict')
 
 
-weights_path = 'mobileNet-KARD-41-0.83.hdf5' # 15 frame
-model = create_model_pretrain(dim, n_sequence, n_channels, n_output)
+weights_path = 'pretrain/mobileNet-47-0.97.hdf5' # 15 frame
+model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNet')
 model.load_weights(weights_path)
 
 
 ## evaluate
-loss, acc = model.evaluate_generator(validation_generator, verbose=0)
-print(loss,acc)
+# loss, acc = model.evaluate_generator(validation_generator, verbose=0)
+# print(loss,acc)
 
 # #### Confusion Matrix
 y_pred_prob = model.predict_generator(predict_generator)
@@ -55,6 +55,9 @@ if normalize:
     print("Normalized confusion matrix")
 else:
     print('Confusion matrix, without normalization')
+
+accuracy = (cm[0,0] + cm[1,1] + cm[2,2] + cm[3,3] ) / 4
+print("accuracy:",accuracy)
 
 # classes = ['ApplyEyeMakeup','Archery','BabyCrawling','Basketball']
 classes = ['1','2','3','4']

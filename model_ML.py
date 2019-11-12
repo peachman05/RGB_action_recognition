@@ -4,7 +4,7 @@ from keras.layers import CuDNNLSTM, LSTM
 from keras.layers import Dense, Input, TimeDistributed, Conv2D
 from keras.layers import Dropout, concatenate, Flatten, GlobalAveragePooling2D, MaxPooling2D
 from tensorflow.python.keras import optimizers
-from keras.applications import MobileNet,MobileNetV2
+from keras.applications import MobileNet, MobileNetV2, ResNet152V2
 
 from keras.regularizers import l2
 from keras.models import Model
@@ -56,15 +56,33 @@ def create_model(dim, n_sequence, n_channels, n_output):
 
     return model
 
-def create_model_pretrain(dim, n_sequence, n_channels, n_output):
+def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
     model = Sequential()
     # after having Conv2D...
-    model.add( 
-        TimeDistributed(
-            MobileNetV2(weights='imagenet',include_top=False), 
-            input_shape=(n_sequence, *dim, n_channels) # 5 images...
+    if pretrain_name == 'ResNet152V2':
+        model.add( 
+            TimeDistributed(
+                ResNet152V2(weights='imagenet',include_top=False), 
+                input_shape=(n_sequence, *dim, n_channels) # 5 images...
+            )
         )
-    )
+    elif pretrain_name == 'MobileNet':
+        model.add( 
+            TimeDistributed(
+                MobileNet(weights='imagenet',include_top=False), 
+                input_shape=(n_sequence, *dim, n_channels) # 5 images...
+            )
+        )
+    elif pretrain_name == 'MobileNetV2':
+        model.add( 
+            TimeDistributed(
+                MobileNetV2(weights='imagenet',include_top=False), 
+                input_shape=(n_sequence, *dim, n_channels) # 5 images...
+            )
+        )
+    else:
+        raise ValueError('pretrain_name is incorrect')
+
     model.add(
         TimeDistributed(
             GlobalAveragePooling2D() # Or Flatten()
@@ -83,3 +101,4 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output):
     model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     
     return model
+

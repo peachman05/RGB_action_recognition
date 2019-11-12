@@ -6,3 +6,15 @@ dribble/dribble02.mp4   0
 shoot/shoot02.mp4       1
 pass/pass02.mp4         2
 stand/stand02.mp4       3
+dribble/dribble03.mp4   0
+shoot/shoot03.mp4       1
+pass/pass03.mp4         2
+stand/stand03.mp4       3
+dribble/dribble04.mp4   0
+shoot/shoot04.mp4       1
+pass/pass04.mp4         2
+stand/stand04.mp4       3
+dribble/dribble06.mp4   0
+shoot/shoot06.mp4       1
+pass/pass06.mp4         2
+stand/stand06.mp4       3

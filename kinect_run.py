@@ -3,18 +3,20 @@ from pykinect2.PyKinectV2 import *
 from pykinect2 import PyKinectRuntime
 import cv2
 import numpy as np
-from model_ML import create_model_pretrain
+from model_ML import create_model_pretrain_old
 import time
 
 dim = (224,224)
-n_sequence = 15
+# n_sequence = 15
+n_sequence = 8  # KARD
 n_channels = 3
 n_output = 4
-# weights_path = 'pretrain/mobileNet-KARD-41-0.83.hdf5' 
-weights_path = 'mobileNetV2-BKB-3ds-48-0.55.hdf5'
+weights_path = 'pretrain/MobileNetV2-BKB-80-0.95-0.91.hdf5' 
+# weights_path = 'mobileNetV2-BKB-3ds-48-0.55.hdf5'
 
 ### load model
-model = create_model_pretrain(dim, n_sequence, n_channels, n_output)
+# model = create_model_pretrain(dim, n_sequence, n_channels, n_output)
+model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 
 frame_window = np.empty((0, *dim, n_channels)) # seq, dim0, dim1, channel
@@ -42,7 +44,7 @@ while(True):
             print("action:", predict_ind)
 
             frame_window = frame_window[1:n_sequence]
-        # cv2.imshow('Frame',frame_re)
+        cv2.imshow('Frame',frame_re)
         end_time = time.time()
         diff_time =end_time - start_time
         print("FPS:",1/diff_time)
