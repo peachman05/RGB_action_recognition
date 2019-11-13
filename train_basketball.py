@@ -12,7 +12,7 @@ n_sequence = 8
 n_channels = 3
 n_output = 4
 path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
-detail_weight = 'MobileNetV2-BKB'
+detail_weight = 'MobileNetV2-BKB-Add3StandSideView'
 
 params = {'dim': dim,
           'batch_size': 2,
@@ -45,12 +45,12 @@ validation_generator = DataGeneratorBKB(test_keys , labels, **params, type_gen='
 # # Design model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, "MobileNetV2")
 
-load_model = False
+load_model = True
 start_epoch = 0
 if load_model:
     # weights_path = 'pretrain/mobileNetV2-BKB-3ds-48-0.55.hdf5' 
-    weights_path = 'MobileNetV2-BKB-7ds-22-0.42.hdf5'   
-    start_epoch = 22
+    weights_path = 'pretrain/MobileNetV2-BKB-add6file-02-0.97-0.95.hdf5'   
+    start_epoch = 0
     model.load_weights(weights_path)
 
 class PlotCallbacks(Callback):

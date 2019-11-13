@@ -3,7 +3,7 @@ from pykinect2.PyKinectV2 import *
 from pykinect2 import PyKinectRuntime
 import cv2
 import numpy as np
-from model_ML import create_model_pretrain_old
+from model_ML import create_model_pretrain
 import time
 
 dim = (224,224)
@@ -11,7 +11,7 @@ dim = (224,224)
 n_sequence = 8  # KARD
 n_channels = 3
 n_output = 4
-weights_path = 'pretrain/MobileNetV2-BKB-80-0.95-0.91.hdf5' 
+weights_path = 'pretrain/MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5' 
 # weights_path = 'mobileNetV2-BKB-3ds-48-0.55.hdf5'
 
 ### load model
@@ -23,6 +23,12 @@ frame_window = np.empty((0, *dim, n_channels)) # seq, dim0, dim1, channel
 X = np.random.randint(0, 100, size=(1, n_sequence, 224, 224, 3))
 ## kinect
 _kinect = PyKinectRuntime.PyKinectRuntime(PyKinectV2.FrameSourceTypes_Color | PyKinectV2.FrameSourceTypes_Depth)
+
+## fill out noise
+threshold = 4
+predict_queue = np.array([3] * threshold)
+action_now = 3 # stand
+
 start_time = time.time()
 while(True):
 
@@ -41,14 +47,23 @@ while(True):
             result = model.predict(frame_window_new)
             v_ = result[0]
             predict_ind = np.argmax(v_)
-            print("action:", predict_ind)
+            class_label = ['dribble','shoot','pass','stand']
+            # print("action:", class_label[predict_ind])
+
+            ## fill out noise
+            predict_queue[:-1] = predict_queue[1:]
+            predict_queue[-1] = predict_ind
+            counts = np.bincount(predict_queue)
+            if np.max(counts) >= threshold:
+                action_now = np.argmax(counts)
+            print( "{: <8}  {: <8}".format(class_label[predict_ind], class_label[action_now] ) )
 
             frame_window = frame_window[1:n_sequence]
         cv2.imshow('Frame',frame_re)
-        end_time = time.time()
-        diff_time =end_time - start_time
-        print("FPS:",1/diff_time)
-        start_time = end_time
+        # end_time = time.time()
+        # diff_time =end_time - start_time
+        # print("FPS:",1/diff_time)
+        # start_time = end_time
 
     if cv2.waitKey(25) & 0xFF == ord('q'):
         break 

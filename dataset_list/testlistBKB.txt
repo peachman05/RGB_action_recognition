@@ -2,7 +2,25 @@ dribble/dribble01.mp4   0
 shoot/shoot01.mp4       1
 pass/pass01.mp4         2
 stand/stand01.mp4       3
+
 dribble/dribble05.mp4   0
 shoot/shoot05.mp4       1
 pass/pass05.mp4         2
 stand/stand05.mp4       3
+
+dribble/dribble10.mp4   0
+shoot/shoot10.mp4       1
+pass/pass10.mp4         2
+stand/stand10.mp4       3
+
+dribble/dribble11.mp4   0
+shoot/shoot11.mp4       1
+pass/pass11.mp4         2
+stand/stand11.mp4       3
+
+dribble/dribble12.mp4   0
+shoot/shoot12.mp4       1
+pass/pass12.mp4         2
+stand/stand12.mp4       3
+
+stand/stand15.mp4       3

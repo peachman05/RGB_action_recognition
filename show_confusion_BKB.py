@@ -27,13 +27,13 @@ params = {'dim': dim,
 test_txt = "dataset_list/testlistBKB.txt"
 test_d = readfile_to_dict(test_txt)
 labels = test_d.copy()
-num_mul = 100
+num_mul = 60
 partition = {'validation': list(test_d.keys()) * num_mul } # IDs
 validation_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='test')
 predict_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='predict')
 
 
-weights_path = 'MobileNetV2-BKB-80-0.95-0.91.hdf5' 
+weights_path = 'MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5' 
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 

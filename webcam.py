@@ -3,13 +3,13 @@ import numpy as np
 from model_ML import create_model_pretrain
 
 dim = (224,224)
-n_sequence = 20
+n_sequence = 8
 n_channels = 3
 n_output = 4
-weights_path = 'mobileNet-KARD-41-0.83.hdf5' 
+weights_path = 'pretrain/MobileNetV2-BKB-add6file-02-0.97-0.95.hdf5' 
 
 ### load model
-model = create_model_pretrain(dim, n_sequence, n_channels, n_output)
+model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 
 frame_window = np.empty((0, *dim, n_channels)) # seq, dim0, dim1, channel

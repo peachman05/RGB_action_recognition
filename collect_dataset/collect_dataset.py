@@ -15,7 +15,7 @@ from skeleton_helper import read_skeleton, get_sequence_file_name
 ##################################
 ############# define #############
 ##################################
-run_time = 90
+run_time = 60
 path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
 action_list = ['dribble','shoot','pass','stand']
 action = action_list[3]
