@@ -4,18 +4,21 @@ from pykinect2 import PyKinectRuntime
 import cv2
 import numpy as np
 import time
-from collect_dataset.skeleton_helper import get_sequence_file_name, read_skeleton
+from skeleton_helper import get_sequence_file_name, read_skeleton
 
+# Parameter
 path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
-action_list = ['dribble','shoot','pass','stand']
-action = action_list[2]
-path_save = path_dataset +'\\'+action+'\\'+action
+action_select = 3 # 0=dribble, 1=shoot, 2=pass, 3=stand
+auto_exit = False # (optional) Auto save and close after ... second
+run_time = 10 # second
 
+
+action_list = ['dribble','shoot','pass','stand']
+action = action_list[action_select]
+path_save = path_dataset +'\\'+action+'\\'+action
 fourcc = cv2.VideoWriter_fourcc(*'MP4V')
 new_w = int(1920/3)
 new_h = int(1080/3)
-# new_w = 1920
-# new_h = 1080
 name_video = get_sequence_file_name(path_save,'.mp4')
 out = cv2.VideoWriter(name_video, fourcc, 30.0, (new_w, new_h))
 
@@ -34,39 +37,49 @@ def save_video(_kinect):
 
 
 start_time = time.time()
+original_time = start_time + 1000
 frame_count = 0
 while(1):    
 
-    # Append skeleton to numpy
+    # Check camera can detect body or not
     joints_data = read_skeleton(_kinect)    
     if joints_data !=  None:
+
+        if frame_count == 0:
+            original_time = start_time
         
         # Write data to video
         if _kinect.has_new_color_frame():
             save_video(_kinect)
 
-        #skeletal data
+        # Append skeleton data to numpy array
         x, y, z = joints_data
         new_f = np.array([x,y,z])
         new_f = np.reshape(new_f, (1, *new_f.shape))
         frame_all = np.append(frame_all, new_f, axis=0 )
+
         frame_count += 1
     else:
         print('Cannot detect skeleton. Please move')
         
+    # calculate FPS
+    dif_t = (time.time() - start_time)
+    pass_t = time.time() - original_time
+    if dif_t > 0 and frame_count > 0:
+        print("frame:{:} FPS: {:.2f} time: {:02}m {:02}s".format(frame_count, 1.0 / dif_t, int(pass_t/60), int(pass_t)%60), end='\r')
+        # print("frame:{:} FPS: {:.2f}".format(frame_count, 1.0 / dif_t), end='\r')
+    start_time = time.time()
+            
         
+    if pass_t > run_time and auto_exit:
+        print('time out!!!!') 
+        break 
+    
     if cv2.waitKey(25) & 0xFF == ord('q'):
         break 
 
-    dif_t = (time.time() - start_time)
-    if dif_t > 0:
-        print("frame:{:} FPS: {:.2f}".format(frame_count, 1.0 / dif_t), end='\r')
-    start_time = time.time()
-
     
-    
-
-# Sa
+# Save file
 name_np_file = get_sequence_file_name(path_save,'.npy')
 np.save(name_np_file, frame_all)
 out.release()

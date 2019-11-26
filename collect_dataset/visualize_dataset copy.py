@@ -7,39 +7,48 @@ import time
 
 import pickle
 
-###################################################################
-###---------------------  Read Data  ---------------------------###
-###################################################################
-
-# Parameter
-path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
-action_select = 3 # 0=dribble, 1=shoot, 2=pass, 3=stand
-number_file = '25'
-
-action_list = ['dribble','shoot','pass','stand']
-action = action_list[action_select]
-path_save = path_dataset +'\\'+action+'\\'+action
-path_file = path_save + number_file + '.npy'
-print(path_file)
-data = np.load(path_file)
-data_plot = data 
-
-print('shape:', data_plot.shape)
-
-
-
-###################################################################
-###---------------------  Plot Graph ---------------------------###
-###################################################################
-
 num_joint = 25
 bone_list = [[24,12], [25,12], [12,11], [11,10], [10,9], # right arm
             [22,8] ,[23,8], [8,7], [7,6], [6,5], # left arm
             [4,3], [3,21], [9,21], [5,21], [21,2], [2,1], [17,1], [13,1], # body
             [17,18], [18,19], [19,20], # right leg
             [13,14], [14,15], [15,16]]
+
 bone_list = np.array(bone_list) - 1
 
+
+###################################################################
+###---------------------  Read Data  ---------------------------###
+###################################################################
+type_file = "dataset"
+
+if type_file == 'dataset':
+    # path_save = "F:/Master Project/Dataset/Extract_data/25 joints"
+    # type_data = 'train'
+    path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
+    action_list = ['dribble','shoot','pass','stand']
+    action = action_list[3]
+    path_save = path_dataset +'\\'+action+'\\'+action
+    path_file = path_save+'25.npy'
+    print(path_file)
+    data = np.load(path_file)
+
+    data_plot = data 
+    print('len:', data_plot.shape[0])
+
+elif type_file == 'realtime':
+    f_x = open("skeleton_realtime.pickle",'rb')
+    test_x = pickle.load(f_x)
+    test_y = None
+    data_plot = np.array(test_x)
+
+print(data_plot.shape)
+
+
+
+###################################################################
+###---------------------  Plot Graph ---------------------------###
+###################################################################
 
 fig = plt.figure()
 ax = fig.gca(projection='3d')
@@ -87,3 +96,6 @@ line_ani = animation.FuncAnimation(fig, update_lines, data_plot.shape[0],
 
 # loop
 plt.show()
+
+
+print("test")

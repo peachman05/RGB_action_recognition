@@ -1,6 +1,5 @@
 from keras import Sequential
 from keras.layers import CuDNNLSTM, LSTM
-# from tensorflow.python.keras.layers import CuDNNLSTM
 from keras.layers import Dense, Input, TimeDistributed, Conv2D
 from keras.layers import Dropout, concatenate, Flatten, GlobalAveragePooling2D, MaxPooling2D
 from tensorflow.python.keras import optimizers
@@ -102,3 +101,24 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
     
     return model
 
+def create_2stream_model(dim, n_sequence, n_channels, n_joint, n_output):
+
+    rgb_stream = Input(shape=(n_sequence, *dim, n_channels), name='rgb_stream')     
+    skeleton_stream = Input(shape=(n_sequence, n_joint), name='skleton_stream')
+
+    mobileNet = TimeDistributed(MobileNetV2(weights='imagenet',include_top=False)) (rgb_stream)    
+    rgb_feature = TimeDistributed(GlobalAveragePooling2D()) (mobileNet)
+
+    rgb_lstm = CuDNNLSTM(64, return_sequences=False)(rgb_feature)
+    skeleton_lstm = CuDNNLSTM(64, return_sequences=False)(skeleton_stream)
+
+    combine = concatenate([rgb_lstm, skeleton_lstm])
+
+    fc_1 = Dense(units=64, activation='relu')(combine)
+    fc_1 = Dropout(0.5)(fc_1)
+    fc_2 = Dense(units=24, activation='relu')(fc_1)
+    fc_3 = Dense(units=4, activation='softmax', use_bias=True, name='main_output')(fc_2)
+    model = Model(inputs=[rgb_stream,skeleton_stream], outputs=fc_3)
+    sgd = optimizers.SGD(lr=0.1, momentum=0.0, decay=0.01, nesterov=False)
+    model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    return model

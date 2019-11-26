@@ -60,6 +60,7 @@ while(True):
 
             frame_window = frame_window[1:n_sequence]
         cv2.imshow('Frame',frame_re)
+
         # end_time = time.time()
         # diff_time =end_time - start_time
         # print("FPS:",1/diff_time)
