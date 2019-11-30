@@ -1,0 +1,24 @@
+run\run01_01            0
+run\run01_02            0
+run\run02_01            0
+run\run02_02            0
+
+sit\sit01_01            1
+sit\sit01_02            1
+sit\sit02_01            1
+sit\sit02_02            1
+
+stand\stand01_01        2
+stand\stand01_02_01     2
+stand\stand02_01        2
+stand\stand02_02        2
+
+standup\standup01_01    3 
+standup\standup01_02    3
+standup\standup02_01    3
+standup\standup02_02    3
+
+walk\walk01_01          4
+walk\walk01_02          4
+walk\walk02_01          4
+walk\walk02_02          4

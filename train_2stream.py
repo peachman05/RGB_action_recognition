@@ -1,7 +1,7 @@
 import numpy as np
 
 from data_gen_bkb import DataGeneratorBKB
-from model_ML import create_model_pretrain
+from model_ML import create_model_pretrain, create_2stream_model
 from data_helper import readfile_to_dict
 
 from keras.callbacks.callbacks import Callback
@@ -10,11 +10,14 @@ from tensorflow.python.keras.callbacks import ModelCheckpoint
 dim = (224,224)
 n_sequence = 8
 n_channels = 3
-n_output = 4
-n_joint = 12
-select_joint = [..]
-path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
-detail_weight = 'MobileNetV2-BKB-Add3StandSideView'
+n_output = 5
+n_joint = 25
+# select_joint = np.array([ 22, 23, 7, 8, 6, 5, ## left
+#                           24, 25, 11, 12, 10, 9, ## right
+#                         ]) - 1 # only arm
+select_joint = np.array(range(25))# only arm
+path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
+detail_weight = 'BUPT-2stream'
 
 params = {'dim': dim,
           'batch_size': 2,
@@ -24,8 +27,8 @@ params = {'dim': dim,
           'select_joint': select_joint,
           'shuffle': True}
 
-train_txt = "dataset_list/trainlistBKB.txt"
-test_txt = "dataset_list/testlistBKB.txt"
+train_txt = "dataset_list/trainlistBUPT.txt"
+test_txt = "dataset_list/testlistBUPT.txt"
 train_d = readfile_to_dict(train_txt)
 test_d = readfile_to_dict(test_txt)
 print(train_d)
@@ -40,13 +43,13 @@ labels = train_d.copy()
 labels.update(test_d) # Labels 
 
 # Generators
-training_generator = DataGenerator2Stream(train_keys , labels, **params, type_gen='train')
-validation_generator = DataGenerator2Stream(test_keys , labels, **params, type_gen='test')
+training_generator = DataGeneratorBKB(train_keys , labels, **params, type_gen='train', type_model='2stream')
+validation_generator = DataGeneratorBKB(test_keys , labels, **params, type_gen='test', type_model='2stream')
 
 # Design model
 model = create_2stream_model(dim, n_sequence, n_channels, n_joint, n_output)
 
-load_model = True
+load_model = False
 start_epoch = 0
 if load_model:
     # weights_path = 'pretrain/mobileNetV2-BKB-3ds-48-0.55.hdf5' 

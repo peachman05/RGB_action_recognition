@@ -10,9 +10,10 @@ from tensorflow.python.keras.callbacks import ModelCheckpoint
 dim = (224,224)
 n_sequence = 8
 n_channels = 3
-n_output = 4
-path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
-detail_weight = 'MobileNetV2-BKB-Add3StandSideView'
+n_output = 5
+# path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
+path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
+detail_weight = 'BUPT'
 
 params = {'dim': dim,
           'batch_size': 2,
@@ -23,8 +24,8 @@ params = {'dim': dim,
 
 # train_txt = "dataset_list/trainlistBKB.txt"
 # test_txt = "dataset_list/testlistBKB.txt"
-train_txt = "dataset_list/trainlistBKB.txt"
-test_txt = "dataset_list/testlistBKB.txt"
+train_txt = "dataset_list/trainlistBUPT.txt"
+test_txt = "dataset_list/testlistBUPT.txt"
 train_d = readfile_to_dict(train_txt)
 test_d = readfile_to_dict(test_txt)
 print(train_d)
@@ -45,7 +46,7 @@ validation_generator = DataGeneratorBKB(test_keys , labels, **params, type_gen='
 # # Design model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, "MobileNetV2")
 
-load_model = True
+load_model = False
 start_epoch = 0
 if load_model:
     # weights_path = 'pretrain/mobileNetV2-BKB-3ds-48-0.55.hdf5' 

@@ -7,8 +7,8 @@ dim = (224,224)
 n_sequence = 8
 n_channels = 3
 n_output = 4
-# weights_path = 'pretrain/MobileNetV2-BKB-add6file-02-0.97-0.95.hdf5' 
 weights_path = 'pretrain/MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5'
+# weights_path = 'BUPT-28-0.97-0.98.hdf5'
 
 ### load model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
@@ -41,6 +41,7 @@ while(cap.isOpened()):
             # print("action:", predict_ind)
 
             class_label = ['dribble','shoot','pass','stand']
+            # class_label = ['run','sit','stand','standup','walk']
 
             ## fill out noise
             predict_queue[:-1] = predict_queue[1:]

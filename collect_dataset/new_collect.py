@@ -7,13 +7,13 @@ import time
 from skeleton_helper import get_sequence_file_name, read_skeleton
 
 # Parameter
-path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
+# path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
 action_select = 3 # 0=dribble, 1=shoot, 2=pass, 3=stand
 auto_exit = False # (optional) Auto save and close after ... second
 run_time = 10 # second
 
-
-action_list = ['dribble','shoot','pass','stand']
+action_list = ['stand','walk','hand_waving','pay_respect','v_sign','thumb_up']
+# action_list = ['dribble','shoot','pass','stand']
 action = action_list[action_select]
 path_save = path_dataset +'\\'+action+'\\'+action
 fourcc = cv2.VideoWriter_fourcc(*'MP4V')
@@ -43,14 +43,13 @@ while(1):
 
     # Check camera can detect body or not
     joints_data = read_skeleton(_kinect)    
-    if joints_data !=  None:
+    if joints_data !=  None and _kinect.has_new_color_frame():
 
         if frame_count == 0:
             original_time = start_time
         
         # Write data to video
-        if _kinect.has_new_color_frame():
-            save_video(_kinect)
+        save_video(_kinect)
 
         # Append skeleton data to numpy array
         x, y, z = joints_data
@@ -75,7 +74,8 @@ while(1):
         print('time out!!!!') 
         break 
     
-    if cv2.waitKey(25) & 0xFF == ord('q'):
+    k = cv2.waitKey(15)
+    if k == ord('q') or k == 27:
         break 
 
     
@@ -83,6 +83,7 @@ while(1):
 name_np_file = get_sequence_file_name(path_save,'.npy')
 np.save(name_np_file, frame_all)
 out.release()
+print('\n')
 print('save',name_video)
 print('save',name_np_file)
 

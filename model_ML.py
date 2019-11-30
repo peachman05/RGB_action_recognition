@@ -101,10 +101,32 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
     
     return model
 
+def create_model_skeleton(n_sequence, n_joint, n_output):
+    skeleton_stream = Input(shape=(n_sequence, n_joint*3 ), name='skleton_stream')
+    skeleton_lstm = CuDNNLSTM(64, return_sequences=False)(skeleton_stream)
+    skeleton_lstm = Dropout(0.5)(skeleton_lstm)
+    fc_1 = Dense(units=24, activation='relu')(skeleton_lstm)
+    fc_1 = Dropout(0.5)(fc_1)
+    fc_2 = Dense(units=n_output, activation='softmax', use_bias=True, name='main_output')(fc_1)
+    model = Model(inputs=skeleton_stream, outputs=fc_2)
+    # print(model.summary())
+
+    # model = Sequential()
+    # model.add(CuDNNLSTM(64, input_shape=(n_sequence, n_joint*3 ),return_sequences=False))
+    # model.add(Dropout(0.4))#使用Dropout函数可以使模型有更多的机会学习到多种独立的表征
+    # model.add(Dense(24) )
+    # model.add(Dropout(0.4))
+    # model.add(Dense(n_output, activation='softmax'))
+    # print(model.summary())
+
+    sgd = optimizers.SGD(lr=0.1, momentum=0.0, decay=0.01, nesterov=False)
+    model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    return model
+
 def create_2stream_model(dim, n_sequence, n_channels, n_joint, n_output):
 
     rgb_stream = Input(shape=(n_sequence, *dim, n_channels), name='rgb_stream')     
-    skeleton_stream = Input(shape=(n_sequence, n_joint), name='skleton_stream')
+    skeleton_stream = Input(shape=(n_sequence, n_joint*3 ), name='skleton_stream')
 
     mobileNet = TimeDistributed(MobileNetV2(weights='imagenet',include_top=False)) (rgb_stream)    
     rgb_feature = TimeDistributed(GlobalAveragePooling2D()) (mobileNet)
@@ -117,7 +139,8 @@ def create_2stream_model(dim, n_sequence, n_channels, n_joint, n_output):
     fc_1 = Dense(units=64, activation='relu')(combine)
     fc_1 = Dropout(0.5)(fc_1)
     fc_2 = Dense(units=24, activation='relu')(fc_1)
-    fc_3 = Dense(units=4, activation='softmax', use_bias=True, name='main_output')(fc_2)
+    fc_2 = Dropout(0.3)(fc_2)
+    fc_3 = Dense(units=n_output, activation='softmax', use_bias=True, name='main_output')(fc_2)
     model = Model(inputs=[rgb_stream,skeleton_stream], outputs=fc_3)
     sgd = optimizers.SGD(lr=0.1, momentum=0.0, decay=0.01, nesterov=False)
     model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])

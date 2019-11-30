@@ -1,11 +1,14 @@
 import cv2
 
 # Parameter
-path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
+# path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
+path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset02\\'
 action_select = 3 # 0=dribble, 1=shoot, 2=pass, 3=stand
-number_file = '25'
+number_file = '00'
 
-action_list = ['dribble','shoot','pass','stand']
+# action_list = ['dribble','shoot','pass','stand']
+action_list = ['run', 'shoot', 'sit', 'stand', 'walk']
+
 action = action_list[action_select]
 path_save = path_dataset +'\\'+action+'\\'+action
 path_file = path_save + number_file + '.mp4'

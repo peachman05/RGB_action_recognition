@@ -1,0 +1,41 @@
+run\run00_01        0
+run\run00_01_02     0
+run\run00_02        0
+run\run03_01        0
+run\run03_01_02     0
+run\run03_02        0
+
+sit\sit00_01        1
+sit\sit00_01_02     1
+sit\sit00_02        1
+sit\sit00_02_02     1
+sit\sit03_01        1
+sit\sit03_01_02     1
+sit\sit03_02        1
+sit\sit04_01        1
+sit\sit04_02        1
+
+stand\stand00_01    2
+stand\stand00_02    2
+stand\stand03_01    2
+stand\stand03_01_02 2
+stand\stand03_02    2
+stand\stand03_02_02 2
+stand\stand03_02_03 2
+stand\stand04_01    2
+stand\stand04_02    2
+
+standup\standup00_01    3
+standup\standup00_02    3
+standup\standup02_01    3
+standup\standup02_02    3
+standup\standup03_01    3
+standup\standup03_02    3
+
+walk\walk00_01      4
+walk\walk00_01_02   4
+walk\walk00_02      4
+walk\walk03_01      4
+walk\walk03_02      4
+walk\walk04_01      4
+walk\walk04_02      4
