@@ -57,12 +57,12 @@ class DataGeneratorBKB(keras.utils.Sequence):
             index_sampling -- n_sequence frame indexs from sampling algorithm 
         '''             
         # Define maximum sampling rate
-        random_sample_range = 4
+        random_sample_range = 10
         if random_sample_range*self.n_sequence > len_frames:
             random_sample_range = len_frames//self.n_sequence
         
         # Randomly choose sample interval and start frame
-        sample_interval = np.random.randint(1, random_sample_range + 1)
+        sample_interval = np.random.randint(4, random_sample_range + 1)
         
         # temp = len_frames - sample_interval * self.n_sequence + 1
         # if temp <= 0:

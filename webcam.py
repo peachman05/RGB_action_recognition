@@ -6,9 +6,10 @@ import time
 dim = (224,224)
 n_sequence = 8
 n_channels = 3
-n_output = 4
-weights_path = 'pretrain/MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5'
+n_output = 3
+# weights_path = 'pretrain/MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5'
 # weights_path = 'BUPT-28-0.97-0.98.hdf5'
+weights_path = 'Sit-06-0.88-0.66.hdf5' 
 
 ### load model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
@@ -19,7 +20,7 @@ frame_window = np.empty((0, *dim, n_channels)) # seq, dim0, dim1, channel
 ## fill out noise
 threshold = 6
 predict_queue = np.array([3] * threshold)
-action_now = 3 # stand
+action_now = 1 # stand
 
 cap = cv2.VideoCapture(0) 
 
@@ -40,7 +41,8 @@ while(cap.isOpened()):
             predict_ind = np.argmax(v_)
             # print("action:", predict_ind)
 
-            class_label = ['dribble','shoot','pass','stand']
+            class_label = ['sit','stand','standup']
+            # class_label = ['dribble','shoot','pass','stand']
             # class_label = ['run','sit','stand','standup','walk']
 
             ## fill out noise
