@@ -8,8 +8,8 @@ n_sequence = 8
 n_channels = 3
 n_output = 3
 # weights_path = 'pretrain/MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5'
-# weights_path = 'BUPT-28-0.97-0.98.hdf5'
-weights_path = 'Sit-06-0.88-0.66.hdf5' 
+weights_path = 'Sit-remove-sitdown-43-0.96-0.84.hdf5'
+# weights_path = 'BUPT4a-12-0.99-0.98.hdf5' 
 
 ### load model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
@@ -43,7 +43,7 @@ while(cap.isOpened()):
 
             class_label = ['sit','stand','standup']
             # class_label = ['dribble','shoot','pass','stand']
-            # class_label = ['run','sit','stand','standup','walk']
+            # class_label = ['run','sit','stand','walk']
 
             ## fill out noise
             predict_queue[:-1] = predict_queue[1:]
@@ -51,7 +51,8 @@ while(cap.isOpened()):
             counts = np.bincount(predict_queue)
             if np.max(counts) >= threshold:
                 action_now = np.argmax(counts)
-            print( "{: <8}  {: <8}".format(class_label[predict_ind], class_label[action_now] ) )
+            # print( "{: <8}  {: <8}".format(class_label[predict_ind], class_label[action_now] ) )
+            print("{:.3f} {:.3f} {:.3f}".format(result[0,0],result[0,1],result[0,2]))
 
             frame_window = frame_window[1:n_sequence]
 
@@ -63,7 +64,7 @@ while(cap.isOpened()):
         # start_time = end_time
  
         # Press Q on keyboard to  exit
-        if cv2.waitKey(25) & 0xFF == ord('q'):
+        if cv2.waitKey(100) & 0xFF == ord('q'):
             break 
     else: 
         break

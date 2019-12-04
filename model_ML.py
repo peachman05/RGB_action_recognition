@@ -103,9 +103,9 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
 
 def create_model_skeleton(n_sequence, n_joint, n_output):
     skeleton_stream = Input(shape=(n_sequence, n_joint*3 ), name='skleton_stream')
-    skeleton_lstm = CuDNNLSTM(64, return_sequences=False)(skeleton_stream)
+    skeleton_lstm = CuDNNLSTM(50, return_sequences=False)(skeleton_stream)
     skeleton_lstm = Dropout(0.5)(skeleton_lstm)
-    fc_1 = Dense(units=24, activation='relu')(skeleton_lstm)
+    fc_1 = Dense(units=60, activation='relu')(skeleton_lstm)
     fc_1 = Dropout(0.5)(fc_1)
     fc_2 = Dense(units=n_output, activation='softmax', use_bias=True, name='main_output')(fc_1)
     model = Model(inputs=skeleton_stream, outputs=fc_2)

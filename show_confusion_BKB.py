@@ -13,7 +13,8 @@ n_sequence = 8
 n_channels = 3
 n_output = 4
 
-path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
+# path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
+path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
 
 params = {'dim': dim,
           'batch_size': 2,
@@ -24,16 +25,16 @@ params = {'dim': dim,
           'shuffle': False}
 
 ## dataset
-test_txt = "dataset_list/testlistBKB.txt"
+test_txt = "dataset_list/testlistBUPT.txt"
 test_d = readfile_to_dict(test_txt)
 labels = test_d.copy()
-num_mul = 60
+num_mul = 20
 partition = {'validation': list(test_d.keys()) * num_mul } # IDs
 validation_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='test')
 predict_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='predict')
 
 
-weights_path = 'MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5' 
+weights_path = 'BUPT4a-12-0.99-0.98.hdf5' 
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 

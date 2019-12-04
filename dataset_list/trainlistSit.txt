@@ -158,13 +158,7 @@ standup\standup00_06 2
 standup\standup00_07 2
 standup\standup00_08 2
 standup\standup00_09 2
-standup\standup01_00 2
-standup\standup01_01 2
-standup\standup01_02 2
-standup\standup01_03 2
-standup\standup01_04 2
-standup\standup01_05 2
-standup\standup01_06 2
+
 standup\standup01_08 2
 standup\standup01_09 2
 standup\standup01_10 2

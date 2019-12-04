@@ -35,7 +35,7 @@ validation_generator = DataGeneratorBKB(partition['validation'] , labels, **para
 predict_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='predict')
 
 
-weights_path = 'Sit-06-0.88-0.66.hdf5' 
+weights_path = 'Sit-de-sampling-28-0.96-0.75.hdf5' 
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 

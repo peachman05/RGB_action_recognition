@@ -10,10 +10,10 @@ from tensorflow.python.keras.callbacks import ModelCheckpoint
 dim = (224,224)
 n_sequence = 8
 n_channels = 3
-n_output = 5
+n_output = 4
 # path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
 path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
-detail_weight = 'BUPT'
+detail_weight = 'BUPT4a'
 
 params = {'dim': dim,
           'batch_size': 2,
@@ -54,10 +54,6 @@ if load_model:
     start_epoch = 0
     model.load_weights(weights_path)
 
-class PlotCallbacks(Callback):
-    def on_batch_end(self, batch, logs={}):
-        print(logs)
-        return
 ## Set callback
 validate_freq = 1
 filepath= detail_weight+"-{epoch:02d}-{accuracy:.2f}-{val_accuracy:.2f}.hdf5"

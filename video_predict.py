@@ -16,11 +16,11 @@ def get_sampling_frame( len_frames):
     Output: n_sequence index from sampling algorithm 
     '''     
     
-    random_sample_range = 10
+    random_sample_range = 1
     # Randomly choose sample interval and start frame
-    sample_interval = np.random.randint(4, random_sample_range + 1)
+    sample_interval = 8#np.random.randint(1, random_sample_range + 1)
     print('sample_interval:',sample_interval)
-    start_i = np.random.randint(0, len_frames - sample_interval * n_sequence + 1)
+    start_i = 1 #np.random.randint(0, len_frames - sample_interval * n_sequence + 1)
     
     # Extract frames as tensors
     index_sampling = []
@@ -36,8 +36,8 @@ X = np.empty((batch_size, n_sequence, *dim, n_channels)) # X : (n_samples, *dim,
 Y = np.empty((batch_size), dtype=int)
 
 
-action = 'stand'
-path_file = 'F:\\Master Project\\Dataset\\sit_stand\\'+action+'\\'+action+'02_02.mp4'
+action = 'standup'
+path_file = 'F:\\Master Project\\Dataset\\sit_stand\\'+action+'\\'+action+'03_03.mp4'
 # path_file = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'+action+'\\'+action+'01_01.mp4'
 # path_file = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'+action+'\\'+action+'00.mp4'
 cap = cv2.VideoCapture(path_file)
@@ -60,7 +60,7 @@ print(X.shape)
 
 ## Predict
 # weights_path = 'pretrain/BUPT-28-0.97-0.98.hdf5'
-weights_path = 'Sit-06-0.88-0.66.hdf5'
+weights_path = 'Sit-remove-sitdown-43-0.96-0.84.hdf5'
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 result = model.predict(X)

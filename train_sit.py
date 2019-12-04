@@ -12,7 +12,7 @@ n_sequence = 8
 n_channels = 3
 n_output = 3
 path_dataset = 'F:\\Master Project\\Dataset\\sit_stand\\'
-detail_weight = 'Sit-4view2'
+detail_weight = 'Sit-de-sampling'
 
 params = {'dim': dim,
           'batch_size': 2,
@@ -25,11 +25,11 @@ train_txt = "dataset_list/trainlistSit.txt"
 test_txt = "dataset_list/testlistSit.txt"
 train_d = readfile_to_dict(train_txt)
 test_d = readfile_to_dict(test_txt)
-print(train_d)
+# print(train_d)
 
 # Prepare key
 train_keys = list(train_d.keys()) * 2  # duplicate 100 time
-test_keys = list(test_d.keys()) * 2
+test_keys = list(test_d.keys()) * 5
 # test_keys = list(train_d.keys()) * 500
 
 # Label
@@ -47,7 +47,7 @@ load_model = True
 start_epoch = 0
 if load_model:
     # weights_path = 'pretrain/mobileNetV2-BKB-3ds-48-0.55.hdf5' 
-    weights_path = 'Sit-4view2-16-0.95-0.65.hdf5'   
+    weights_path = 'Sit-remove-sitdown-43-0.96-0.84.hdf5'   
     start_epoch = 0
     model.load_weights(weights_path)
 

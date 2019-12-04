@@ -7,8 +7,8 @@ from data_helper import readfile_to_dict
 from keras.callbacks.callbacks import Callback
 from tensorflow.python.keras.callbacks import ModelCheckpoint
 
-n_sequence = 15
-n_output = 5
+n_sequence = 8
+n_output = 4
 n_joint = 25
 select_joint = np.array(range(25))# only arm
 
@@ -46,8 +46,8 @@ model = create_model_skeleton(n_sequence, n_joint, n_output)
 load_model = False
 start_epoch = 0
 if load_model:
-    # weights_path = 'pretrain/mobileNetV2-BKB-3ds-48-0.55.hdf5' 
-    weights_path = 'Skeleton-06-0.86-0.92.hdf5'   
+    weights_path = 'pretrain/Skeleton-12-0.93-0.92.hdf5' 
+    # weights_path = 'Skeleton-06-0.86-0.92.hdf5'   
     start_epoch = 0
     model.load_weights(weights_path)
 

@@ -3,6 +3,7 @@ import keras
 import cv2
 import os
 import matplotlib.pyplot as plt
+from imageai.Detection import ObjectDetection
 
 class DataGeneratorBKB(keras.utils.Sequence):
     'Generates data for Keras'
@@ -23,6 +24,15 @@ class DataGeneratorBKB(keras.utils.Sequence):
         self.type_gen = type_gen
         self.type_model = type_model
         print("all:", len(self.list_IDs), " batch per epoch", int(np.floor(len(self.list_IDs) / self.batch_size)) )
+        
+        # execution_path = os.getcwd()
+        # self.detector = ObjectDetection()
+        # self.detector.setModelTypeAsYOLOv3()
+        # self.detector.setModelPath( os.path.join(execution_path , "pretrain/yolo.h5"))
+        # self.detector.loadModel(detection_speed="fast")#detection_speed="fast"
+        # self.execution_path = execution_path
+        # self.detector = detector
+        
         self.on_epoch_end()
 
     def __len__(self):
@@ -55,14 +65,17 @@ class DataGeneratorBKB(keras.utils.Sequence):
             len_frames -- number of frames that this video have
         Output: 
             index_sampling -- n_sequence frame indexs from sampling algorithm 
-        '''             
+        '''
+
         # Define maximum sampling rate
         random_sample_range = 10
         if random_sample_range*self.n_sequence > len_frames:
             random_sample_range = len_frames//self.n_sequence
-        
+
+        if random_sample_range <= 0:
+            print(random_sample_range, len_frames)
         # Randomly choose sample interval and start frame
-        sample_interval = np.random.randint(4, random_sample_range + 1)
+        sample_interval = np.random.randint(1, random_sample_range + 1)
         
         # temp = len_frames - sample_interval * self.n_sequence + 1
         # if temp <= 0:
@@ -78,6 +91,24 @@ class DataGeneratorBKB(keras.utils.Sequence):
         
         return index_sampling
 
+    def get_crop_img(self, frame):
+        # detect_image, detections, extract_picture = self.detector.detectObjectsFromImage(input_type="array", input_image=frame, output_type='array', 
+        #                                          minimum_percentage_probability=10, extract_detected_objects=True )
+        print('#################',self.execution_path)
+        detections = self.detector.detectObjectsFromImage(input_image=os.path.join(self.execution_path , "room.jpg"),
+             output_image_path=os.path.join(self.execution_path , "image2new.jpg"), minimum_percentage_probability=30)
+        max_prob = 0
+        max_idx = 0
+        for i,eachObject in enumerate(detections):
+            if eachObject["name"] == 'person' and eachObject["percentage_probability"] > max_prob:
+                max_prob = eachObject["percentage_probability"]
+                max_idx = i
+        if max_idx > len(detections):
+            # if no detection, use black array
+            crop_img = np.zeros((*self.dim, self.n_channels))
+        else:
+            crop_img = extract_picture[max_idx]
+        return crop_img
 
     def __data_generation(self, list_IDs_temp):
         'Generates data containing batch_size samples'
@@ -106,7 +137,9 @@ class DataGeneratorBKB(keras.utils.Sequence):
                 for j, n_pic in enumerate(index_sampling):
                     cap.set(cv2.CAP_PROP_POS_FRAMES, n_pic) # jump to that index
                     ret, frame = cap.read()
+                    # frame = self.get_crop_img(frame)
                     new_image = cv2.resize(frame, self.dim)
+                    # new_image = frame
                     new_image = new_image/255.0                
                     X1[i,j,:,:,:] = new_image            
 

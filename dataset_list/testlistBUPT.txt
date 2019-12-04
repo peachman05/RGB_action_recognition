@@ -13,12 +13,7 @@ stand\stand01_02_01     2
 stand\stand02_01        2
 stand\stand02_02        2
 
-standup\standup01_01    3 
-standup\standup01_02    3
-standup\standup02_01    3
-standup\standup02_02    3
-
-walk\walk01_01          4
-walk\walk01_02          4
-walk\walk02_01          4
-walk\walk02_02          4
+walk\walk01_01          3
+walk\walk01_02          3
+walk\walk02_01          3
+walk\walk02_02          3

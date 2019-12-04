@@ -25,17 +25,10 @@ stand\stand03_02_03 2
 stand\stand04_01    2
 stand\stand04_02    2
 
-standup\standup00_01    3
-standup\standup00_02    3
-standup\standup02_01    3
-standup\standup02_02    3
-standup\standup03_01    3
-standup\standup03_02    3
-
-walk\walk00_01      4
-walk\walk00_01_02   4
-walk\walk00_02      4
-walk\walk03_01      4
-walk\walk03_02      4
-walk\walk04_01      4
-walk\walk04_02      4
+walk\walk00_01      3
+walk\walk00_01_02   3
+walk\walk00_02      3
+walk\walk03_01      3
+walk\walk03_02      3
+walk\walk04_01      3
+walk\walk04_02      3
