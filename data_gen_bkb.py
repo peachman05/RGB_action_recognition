@@ -2,8 +2,7 @@ import numpy as np
 import keras
 import cv2
 import os
-import matplotlib.pyplot as plt
-from imageai.Detection import ObjectDetection
+# from imageai.Detection import ObjectDetection
 
 class DataGeneratorBKB(keras.utils.Sequence):
     'Generates data for Keras'
@@ -68,19 +67,23 @@ class DataGeneratorBKB(keras.utils.Sequence):
         '''
 
         # Define maximum sampling rate
-        random_sample_range = 10
-        if random_sample_range*self.n_sequence > len_frames:
-            random_sample_range = len_frames//self.n_sequence
+        sample_interval = len_frames//self.n_sequence
+        start_i = 0
 
-        if random_sample_range <= 0:
-            print(random_sample_range, len_frames)
-        # Randomly choose sample interval and start frame
-        sample_interval = np.random.randint(1, random_sample_range + 1)
-        
-        # temp = len_frames - sample_interval * self.n_sequence + 1
-        # if temp <= 0:
-        #     print(temp, len_frames)
-        start_i = np.random.randint(0, len_frames - sample_interval * self.n_sequence + 1)
+        if self.type_gen =='train':
+            random_sample_range = 10
+            if random_sample_range*self.n_sequence > len_frames:
+                random_sample_range = len_frames//self.n_sequence
+
+            if random_sample_range <= 0:
+                print(random_sample_range, len_frames)
+            # Randomly choose sample interval and start frame
+            sample_interval = np.random.randint(3, random_sample_range + 1)
+            
+            # temp = len_frames - sample_interval * self.n_sequence + 1
+            # if temp <= 0:
+            #     print(temp, len_frames)
+            start_i = np.random.randint(0, len_frames - sample_interval * self.n_sequence + 1)
         
         # Get n_sequence index of frames
         index_sampling = []
