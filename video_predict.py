@@ -3,7 +3,7 @@ import numpy as np
 import os
 import cv2
 from model_ML import create_model_pretrain
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 dim = (224,224)
 n_sequence = 8
@@ -19,8 +19,11 @@ def get_sampling_frame( len_frames):
     random_sample_range = 1
     # Randomly choose sample interval and start frame
     sample_interval = 8#np.random.randint(1, random_sample_range + 1)
-    print('sample_interval:',sample_interval)
+    # print('sample_interval:',sample_interval)
     start_i = 1 #np.random.randint(0, len_frames - sample_interval * n_sequence + 1)
+
+    sample_interval = len_frames//n_sequence
+    start_i = 0
     
     # Extract frames as tensors
     index_sampling = []
@@ -37,7 +40,9 @@ Y = np.empty((batch_size), dtype=int)
 
 
 action = 'standup'
-path_file = 'F:\\Master Project\\Dataset\\sit_stand\\'+action+'\\'+action+'03_03.mp4'
+# base_path = 'F:\\Master Project'
+base_path = 'D:\\Peach\\'
+path_file = base_path+'Dataset\\sit_stand\\'+action+'\\'+action+'03_04.mp4'
 # path_file = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'+action+'\\'+action+'01_01.mp4'
 # path_file = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'+action+'\\'+action+'00.mp4'
 cap = cv2.VideoCapture(path_file)
@@ -60,7 +65,7 @@ print(X.shape)
 
 ## Predict
 # weights_path = 'pretrain/BUPT-28-0.97-0.98.hdf5'
-weights_path = 'Sit-remove-sitdown-43-0.96-0.84.hdf5'
+weights_path = 'Sit-inc-sequence-full-test-12-0.91-0.77.hdf5'
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 result = model.predict(X)

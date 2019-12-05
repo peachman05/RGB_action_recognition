@@ -2,7 +2,7 @@ from keras import Sequential
 from keras.layers import CuDNNLSTM, LSTM
 from keras.layers import Dense, Input, TimeDistributed, Conv2D
 from keras.layers import Dropout, concatenate, Flatten, GlobalAveragePooling2D, MaxPooling2D
-from tensorflow.python.keras import optimizers
+from keras import optimizers
 from keras.applications import MobileNet, MobileNetV2, ResNet152V2
 
 from keras.regularizers import l2

@@ -12,8 +12,8 @@ dim = (224,224)
 n_sequence = 8
 n_channels = 3
 n_output = 3
-
-path_dataset = 'F:\\Master Project\\Dataset\\sit_stand\\'
+base_path = 'D:\\Peach\\'
+path_dataset = base_path+'Dataset\\sit_stand\\'
 
 params = {'dim': dim,
           'batch_size': 2,
@@ -35,7 +35,7 @@ validation_generator = DataGeneratorBKB(partition['validation'] , labels, **para
 predict_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='predict')
 
 
-weights_path = 'Sit-de-sampling-28-0.96-0.75.hdf5' 
+weights_path = 'Sit-inc-sequence-full-test-12-0.91-0.77.hdf5' 
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 
