@@ -70,20 +70,20 @@ class DataGeneratorBKB(keras.utils.Sequence):
         sample_interval = len_frames//self.n_sequence
         start_i = np.random.randint(0, len_frames - sample_interval * self.n_sequence + 1)
 
-        # if self.type_gen =='train':
-        #     random_sample_range = 10
-        #     if random_sample_range*self.n_sequence > len_frames:
-        #         random_sample_range = len_frames//self.n_sequence
+        if self.type_gen =='train':
+            random_sample_range = 7
+            if random_sample_range*self.n_sequence > len_frames:
+                random_sample_range = len_frames//self.n_sequence
 
-        #     if random_sample_range <= 0:
-        #         print(random_sample_range, len_frames)
-        #     # Randomly choose sample interval and start frame
-        #     sample_interval = np.random.randint(3, random_sample_range + 1)
+            if random_sample_range <= 0:
+                print('test:',random_sample_range, len_frames)
+            # Randomly choose sample interval and start frame
+            sample_interval = np.random.randint(2, random_sample_range + 1)
             
-        #     # temp = len_frames - sample_interval * self.n_sequence + 1
-        #     # if temp <= 0:
-        #     #     print(temp, len_frames)
-        #     start_i = np.random.randint(0, len_frames - sample_interval * self.n_sequence + 1)
+            # temp = len_frames - sample_interval * self.n_sequence + 1
+            # if temp <= 0:
+            #     print(temp, len_frames)
+            start_i = np.random.randint(0, len_frames - sample_interval * self.n_sequence + 1)
         
         # Get n_sequence index of frames
         index_sampling = []
@@ -121,7 +121,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
         Y = np.empty((self.batch_size), dtype=int)
 
         for i, ID in enumerate(list_IDs_temp):  # ID is name of file (2 batch)
-            path_video = self.path_dataset + ID + '.mp4'
+            path_video = self.path_dataset + ID #+ '.mp4'
             path_skeleton = self.path_dataset + ID + '.npy'
             
             

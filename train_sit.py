@@ -8,14 +8,14 @@ from keras.callbacks.callbacks import Callback
 from tensorflow.python.keras.callbacks import ModelCheckpoint
 
 dim = (224,224)
-n_sequence = 8
+n_sequence = 4
 n_channels = 3
 n_output = 3
 
-# base_path = 'F:\\Master Project\\'
-base_path = 'D:\\Peach\\'
+base_path = 'F:\\Master Project\\'
+# base_path = 'D:\\Peach\\'
 path_dataset = base_path + 'Dataset\\sit_stand\\'
-detail_weight = 'Sit-inc-sequence-full-test'
+detail_weight = 'Sit-Xception'
 
 params = {'dim': dim,
           'batch_size': 2,
@@ -24,14 +24,15 @@ params = {'dim': dim,
           'path_dataset': path_dataset,
           'shuffle': True}
 
-train_txt = "dataset_list/trainlistSit.txt"
-test_txt = "dataset_list/testlistSit.txt"
+# train_txt = "dataset_list/trainlistSit.txt"
+# test_txt = "dataset_list/testlistSit.txt"
+
 train_d = readfile_to_dict(train_txt)
 test_d = readfile_to_dict(test_txt)
 # print(train_d)
 
 # Prepare key
-train_keys = list(train_d.keys()) * 3  # duplicate 100 time
+train_keys = list(train_d.keys()) * 1  # duplicate 100 time
 test_keys = list(test_d.keys()) * 1
 # test_keys = list(train_d.keys()) * 500
 
@@ -44,9 +45,9 @@ training_generator = DataGeneratorBKB(train_keys , labels, **params, type_gen='t
 validation_generator = DataGeneratorBKB(test_keys , labels, **params, type_gen='test')
 
 # # Design model
-model = create_model_pretrain(dim, n_sequence, n_channels, n_output, "MobileNetV2")
+model = create_model_pretrain(dim, n_sequence, n_channels, n_output, "Xception")
 
-load_model = True
+load_model = False
 start_epoch = 0
 if load_model:
     # weights_path = 'pretrain/mobileNetV2-BKB-3ds-48-0.55.hdf5' 

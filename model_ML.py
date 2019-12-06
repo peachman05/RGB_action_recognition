@@ -3,7 +3,7 @@ from keras.layers import CuDNNLSTM, LSTM
 from keras.layers import Dense, Input, TimeDistributed, Conv2D
 from keras.layers import Dropout, concatenate, Flatten, GlobalAveragePooling2D, MaxPooling2D
 from keras import optimizers
-from keras.applications import MobileNet, MobileNetV2, ResNet152V2
+from keras.applications import MobileNet, MobileNetV2, ResNet152V2, Xception
 
 from keras.regularizers import l2
 from keras.models import Model
@@ -65,10 +65,10 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
                 input_shape=(n_sequence, *dim, n_channels) # 5 images...
             )
         )
-    elif pretrain_name == 'MobileNet':
+    elif pretrain_name == 'Xception':
         model.add( 
             TimeDistributed(
-                MobileNet(weights='imagenet',include_top=False), 
+                Xception(weights='imagenet',include_top=False), 
                 input_shape=(n_sequence, *dim, n_channels) # 5 images...
             )
         )
