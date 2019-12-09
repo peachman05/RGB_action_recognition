@@ -11,6 +11,7 @@ n_channels = 3
 n_output = 4
 base_path = 'F:\\Master Project\\'
 # base_path = 'D:\\Peach\\'
+
 path_dataset = base_path + 'Dataset\\UCF-101\\'
 detail_weight = 'UCF-mobilenet2'
 
