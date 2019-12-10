@@ -9,10 +9,11 @@ from model_ML import create_model_pretrain
 from data_helper import readfile_to_dict
 
 dim = (224,224)
-n_sequence = 8
+n_sequence = 4
 n_channels = 3
 n_output = 3
-base_path = 'D:\\Peach\\'
+# base_path = 'D:\\Peach\\'
+base_path = 'F:\\Master Project\\'
 path_dataset = base_path+'Dataset\\sit_stand\\'
 
 params = {'dim': dim,
@@ -29,13 +30,13 @@ test_d = readfile_to_dict(test_txt)
 labels = test_d.copy()
 num_mul = 1
 print(len(test_d.keys()))
-key_list = list(test_d.keys())
-partition = {'validation': key_list * num_mul } # IDs
+key_list = list(test_d.keys()) * num_mul
+partition = {'validation': key_list  } # IDs
 validation_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='test')
 predict_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='predict')
 
 
-weights_path = 'Sit-inc-sequence-full-test-12-0.91-0.77.hdf5' 
+weights_path = 'Sit-augment-30-0.85-0.85.hdf5' 
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 
@@ -54,6 +55,7 @@ print(len(test_y))
 y_pred = np.argmax(y_pred_prob, axis=1)
 normalize = True
 
+all_y = len(test_y)
 for i in range(len(y_pred)):
     if test_y[i] != y_pred[i]:
         print(key_list[i],' actual:',test_y[i],'predict:',y_pred[i])

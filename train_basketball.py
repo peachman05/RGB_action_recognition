@@ -13,7 +13,7 @@ n_channels = 3
 n_output = 4
 # path_dataset = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'
 path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
-detail_weight = 'BUPT4a'
+detail_weight = 'BUPT4-aug'
 
 params = {'dim': dim,
           'batch_size': 2,

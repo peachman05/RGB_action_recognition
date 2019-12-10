@@ -2,6 +2,7 @@ import numpy as np
 import keras
 import cv2
 import os
+from vidaug import augmentors as va
 # from imageai.Detection import ObjectDetection
 
 class DataGeneratorBKB(keras.utils.Sequence):
@@ -31,6 +32,15 @@ class DataGeneratorBKB(keras.utils.Sequence):
         # self.detector.loadModel(detection_speed="fast")#detection_speed="fast"
         # self.execution_path = execution_path
         # self.detector = detector
+
+        sometimes = lambda aug: va.Sometimes(0.5, aug) # Used to apply augmentor with 50% probability
+        self.seq = va.Sequential([
+            # va.RandomCrop(size=(300, 300)), # randomly crop video with a size of (240 x 180)
+            va.RandomRotate(degrees=10), # randomly rotates the video with a degree randomly choosen from [-10, 10]  
+            va.RandomTranslate(x=30,y=30), 
+            # va.Add(value=100),
+            sometimes(va.HorizontalFlip()) # horizontally flip the video with 50% probability
+        ])
         
         self.on_epoch_end()
 
@@ -67,10 +77,10 @@ class DataGeneratorBKB(keras.utils.Sequence):
         '''
 
         # Define maximum sampling rate
-        sample_interval = len_frames//self.n_sequence
-        start_i = np.random.randint(0, len_frames - sample_interval * self.n_sequence + 1)
+        # sample_interval = len_frames//self.n_sequence
+        # start_i = np.random.randint(0, len_frames - sample_interval * self.n_sequence + 1)
 
-        if self.type_gen =='train':
+        if True:#self.type_gen =='train':
             random_sample_range = 7
             if random_sample_range*self.n_sequence > len_frames:
                 random_sample_range = len_frames//self.n_sequence
@@ -78,7 +88,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
             if random_sample_range <= 0:
                 print('test:',random_sample_range, len_frames)
             # Randomly choose sample interval and start frame
-            sample_interval = np.random.randint(2, random_sample_range + 1)
+            sample_interval = np.random.randint(3, random_sample_range + 1)
             
             # temp = len_frames - sample_interval * self.n_sequence + 1
             # if temp <= 0:
@@ -121,7 +131,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
         Y = np.empty((self.batch_size), dtype=int)
 
         for i, ID in enumerate(list_IDs_temp):  # ID is name of file (2 batch)
-            path_video = self.path_dataset + ID #+ '.mp4'
+            path_video = self.path_dataset + ID + '.mp4'
             path_skeleton = self.path_dataset + ID + '.npy'
             
             
@@ -143,8 +153,14 @@ class DataGeneratorBKB(keras.utils.Sequence):
                     # frame = self.get_crop_img(frame)
                     new_image = cv2.resize(frame, self.dim)
                     # new_image = frame
-                    new_image = new_image/255.0                
-                    X1[i,j,:,:,:] = new_image            
+                    # new_image = new_image/255.0                
+                    X1[i,j,:,:,:] = new_image
+
+                if self.type_gen =='train':
+                    X1[i,] = np.array(self.seq(X1[i,]))/255.0
+                else:
+                    X1[i,] = X1[i,]/255.0
+                        
 
             if self.type_model == '2stream' or self.type_model == 'skeleton':
                 # Get skeleton sequence                   

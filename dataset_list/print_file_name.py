@@ -3,17 +3,19 @@ import os
 def walk2(dirname):
     list_ = []
     for root, dirs, files in os.walk(dirname):
-        print(root)
+        # print(root)
         for filename in files:
             list_.append(os.path.join(root, filename))
     return list_
 
 
-path_dataset = 'F:\\Master Project\\Dataset\\sit_stand\\'
+# path_dataset = 'F:\\Master Project\\Dataset\\sit_stand\\'
+path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
 
 # list_file = walk2(path_dataset)
 # action_list = ['run','sit','stand','standup','walk']
-action_list = ['sit','stand','standup','sitdown']
+action_list = ['run','sit','stand','walk']
+# action_list = ['sit','stand','standup','sitdown']
 
 # list_file = [list_file[0]]
 # print(len(list_file))

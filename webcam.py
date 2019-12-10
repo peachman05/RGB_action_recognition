@@ -4,11 +4,11 @@ from model_ML import create_model_pretrain
 import time
 
 dim = (224,224)
-n_sequence = 8
+n_sequence = 15
 n_channels = 3
 n_output = 3
 # weights_path = 'pretrain/MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5'
-weights_path = 'Sit-remove-sitdown-43-0.96-0.84.hdf5'
+weights_path = 'Sit-augment-30-0.85-0.85.hdf5'
 # weights_path = 'BUPT4a-12-0.99-0.98.hdf5' 
 
 ### load model
