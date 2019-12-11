@@ -3,13 +3,14 @@ import keras
 import cv2
 import os
 from vidaug import augmentors as va
+from matplotlib.pyplot import imread, imshow, show
 # from imageai.Detection import ObjectDetection
 
 class DataGeneratorBKB(keras.utils.Sequence):
     'Generates data for Keras'
     def __init__(self, list_IDs, labels, batch_size=32, dim=(32,32), n_channels=1,
                  n_sequence=4, shuffle=True, path_dataset=None,
-                 select_joint=[], type_gen='train', type_model='rgb'):
+                 select_joint=[], type_gen='train', type_model='rgb', option=None):
         'Initialization'
         self.dim = dim
         self.batch_size = batch_size
@@ -21,6 +22,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
         self.path_dataset = path_dataset
         self.select_joint = select_joint
         self.n_joint = len(select_joint)
+        self.option = option
         self.type_gen = type_gen
         self.type_model = type_model
         print("all:", len(self.list_IDs), " batch per epoch", int(np.floor(len(self.list_IDs) / self.batch_size)) )
@@ -34,13 +36,15 @@ class DataGeneratorBKB(keras.utils.Sequence):
         # self.detector = detector
 
         sometimes = lambda aug: va.Sometimes(0.5, aug) # Used to apply augmentor with 50% probability
-        self.seq = va.Sequential([
+        self.seq = va.SomeOf([ #va.Sequential([
             # va.RandomCrop(size=(300, 300)), # randomly crop video with a size of (240 x 180)
             va.RandomRotate(degrees=10), # randomly rotates the video with a degree randomly choosen from [-10, 10]  
-            va.RandomTranslate(x=30,y=30), 
-            # va.Add(value=100),
+            va.RandomTranslate(x=60,y=30), 
+            # sometimes(va.Add(value=-100)),
+            # sometimes(va.Pepper(ratio=40)),
+            sometimes(va.Add(value=-60)),
             sometimes(va.HorizontalFlip()) # horizontally flip the video with 50% probability
-        ])
+        ], 2)
         
         self.on_epoch_end()
 
@@ -123,6 +127,20 @@ class DataGeneratorBKB(keras.utils.Sequence):
             crop_img = extract_picture[max_idx]
         return crop_img
 
+    def calculateRGBdiff(self, sequence_img):
+        'keep first frame as rgb data, other is use RGBdiff for temporal data'
+        length = len(sequence_img)
+        new_sequence = np.zeros((length,self.dim[0],self.dim[1],self.n_channels))
+
+        # find RGBdiff frame 1 to last frame
+        for i in range(length-1,0,-1): # count down
+            new_sequence[i] = cv2.subtract(sequence_img[i],sequence_img[i-1])
+        
+        new_sequence[0] = sequence_img[0] # first frame as rgb data
+
+        return new_sequence
+        
+
     def __data_generation(self, list_IDs_temp):
         'Generates data containing batch_size samples'
         # Initialization
@@ -137,7 +155,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
             
             if self.type_model == '2stream' or self.type_model == 'rgb':
                 cap = cv2.VideoCapture(path_video)    
-                length_file = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) # get how many frames this video have           
+                length_file = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))-1 # get how many frames this video have ,-1 because some bug          
                 
             if self.type_model == '2stream' or self.type_model == 'skeleton':
                 skeleton_data = np.load(path_skeleton)
@@ -155,11 +173,20 @@ class DataGeneratorBKB(keras.utils.Sequence):
                     # new_image = frame
                     # new_image = new_image/255.0                
                     X1[i,j,:,:,:] = new_image
+                    
 
                 if self.type_gen =='train':
                     X1[i,] = np.array(self.seq(X1[i,]))/255.0
                 else:
                     X1[i,] = X1[i,]/255.0
+
+                # cv2.imshow('imgae',X1[i,0])
+                # cv2.waitKey(2000)
+
+
+                if self.option == 'RGBdiff':
+                    # print("dddddddddddd")
+                    X1[i,] = self.calculateRGBdiff(X1[i,])
                         
 
             if self.type_model == '2stream' or self.type_model == 'skeleton':

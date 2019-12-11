@@ -11,10 +11,11 @@ from data_helper import readfile_to_dict
 dim = (224,224)
 n_sequence = 4
 n_channels = 3
-n_output = 3
+n_output = 4
 # base_path = 'D:\\Peach\\'
 base_path = 'F:\\Master Project\\'
-path_dataset = base_path+'Dataset\\sit_stand\\'
+# path_dataset = base_path+'Dataset\\sit_stand\\'
+path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset\\'
 
 params = {'dim': dim,
           'batch_size': 2,
@@ -25,7 +26,7 @@ params = {'dim': dim,
           'shuffle': False}
 
 ## dataset
-test_txt = "dataset_list/testlistSit.txt"
+test_txt = "dataset_list/testlistBUPT.txt"
 test_d = readfile_to_dict(test_txt)
 labels = test_d.copy()
 num_mul = 1
@@ -36,7 +37,7 @@ validation_generator = DataGeneratorBKB(partition['validation'] , labels, **para
 predict_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='predict')
 
 
-weights_path = 'Sit-augment-30-0.85-0.85.hdf5' 
+weights_path = 'BUPT-sit-augment-85-0.90-0.84.hdf5' 
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 
@@ -81,7 +82,8 @@ print("accuracy:",accuracy)
 
 # classes = ['ApplyEyeMakeup','Archery','BabyCrawling','Basketball']
 # classes = ['0','1','2','3']
-classes = ['sit','stand','standup']
+# classes = ['sit','stand','standup']
+classes = ['run','sit','stand','walk']
 
 df_cm = pd.DataFrame(cm, columns=classes, index=classes)
 df_cm.index.name = 'Actual'
