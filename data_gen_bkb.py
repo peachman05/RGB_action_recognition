@@ -4,6 +4,7 @@ import cv2
 import os
 from vidaug import augmentors as va
 from matplotlib.pyplot import imread, imshow, show
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 # from imageai.Detection import ObjectDetection
 
 class DataGeneratorBKB(keras.utils.Sequence):
@@ -35,16 +36,18 @@ class DataGeneratorBKB(keras.utils.Sequence):
         # self.execution_path = execution_path
         # self.detector = detector
 
-        sometimes = lambda aug: va.Sometimes(0.5, aug) # Used to apply augmentor with 50% probability
-        self.seq = va.SomeOf([ #va.Sequential([
-            # va.RandomCrop(size=(300, 300)), # randomly crop video with a size of (240 x 180)
-            va.RandomRotate(degrees=10), # randomly rotates the video with a degree randomly choosen from [-10, 10]  
-            va.RandomTranslate(x=60,y=30), 
-            # sometimes(va.Add(value=-100)),
-            # sometimes(va.Pepper(ratio=40)),
-            sometimes(va.Add(value=-60)),
-            sometimes(va.HorizontalFlip()) # horizontally flip the video with 50% probability
-        ], 2)
+        # sometimes = lambda aug: va.Sometimes(0.5, aug) # Used to apply augmentor with 50% probability
+        # self.seq = va.SomeOf([ #va.Sequential([
+        #     # va.RandomCrop(size=(300, 300)), # randomly crop video with a size of (240 x 180)
+        #     va.RandomRotate(degrees=10), # randomly rotates the video with a degree randomly choosen from [-10, 10]  
+        #     va.RandomTranslate(x=60,y=30), 
+        #     # sometimes(va.Add(value=-100)),
+        #     # sometimes(va.Pepper(ratio=40)),
+        #     sometimes(va.Add(value=-60)),
+        #     sometimes(va.HorizontalFlip()) # horizontally flip the video with 50% probability
+        # ], 2)
+
+        self.aug_gen = ImageDataGenerator()        
         
         self.on_epoch_end()
 
@@ -139,6 +142,47 @@ class DataGeneratorBKB(keras.utils.Sequence):
         new_sequence[0] = sequence_img[0] # first frame as rgb data
 
         return new_sequence
+
+    def sequence_augment(self, sequence):
+        name_list = ['rotate','width_shift','height_shift',
+                    'brightness','flip_horizontal','width_zoom',
+                    'height_zoom']
+        dictkey_list = ['theta','ty','tx',
+                    'brightness','flip_horizontal','zy',
+                    'zx']
+        # dictkey_list = ['ty','tx','zy','zx']
+        random_aug = np.random.randint(2, 5) # random 0-4 augmentation method
+        pick_idx = np.random.choice(len(dictkey_list), random_aug, replace=False) #
+
+        dict_input = {}
+        for i in pick_idx:
+            if dictkey_list[i] == 'theta':
+                dict_input['theta'] = np.random.randint(-10, 10)
+
+            elif dictkey_list[i] == 'ty': # width_shift
+                dict_input['ty'] = np.random.randint(-60, 60)
+
+            elif dictkey_list[i] == 'tx': # height_shift
+                dict_input['tx'] = np.random.randint(-30, 30)
+
+            elif dictkey_list[i] == 'brightness': 
+                dict_input['brightness'] = np.random.uniform(0.15,1)
+
+            elif dictkey_list[i] == 'flip_horizontal': 
+                dict_input['flip_horizontal'] = True
+
+            elif dictkey_list[i] == 'zy': # width_zoom
+                dict_input['zy'] = np.random.uniform(0.5,1.5)
+
+            elif dictkey_list[i] == 'zx': # height_zoom
+                dict_input['zx'] = np.random.uniform(0.5,1.5)
+        
+        sh = sequence.shape
+        new_sequence = np.zeros((sh[0],sh[1],sh[2],sh[3]))
+        for i in range(sh[0]):
+            new_sequence[i] = self.aug_gen.apply_transform(sequence[i],dict_input)
+        
+        return new_sequence
         
 
     def __data_generation(self, list_IDs_temp):
@@ -176,7 +220,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
                     
 
                 if self.type_gen =='train':
-                    X1[i,] = np.array(self.seq(X1[i,]))/255.0
+                    X1[i,] = self.sequence_augment(X1[i,])/255.0
                 else:
                     X1[i,] = X1[i,]/255.0
 

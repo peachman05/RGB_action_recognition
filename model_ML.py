@@ -7,7 +7,11 @@ from keras.applications import MobileNet, MobileNetV2, ResNet152V2, Xception
 
 from keras.regularizers import l2
 from keras.models import Model
+from keras import backend as K
 
+def my_loss( y_true, y_pred ):
+    y_pred_softmax  = K.softmax(y_pred) 
+    return K.sparse_categorical_crossentropy(y_true, y_pred_softmax)
 
 def create_model(dim, n_sequence, n_channels, n_output):
     model = Sequential()
@@ -95,8 +99,11 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
 
     model.add(Dense(24, activation='relu'))
     model.add(Dropout(.5))
+    # model.add(Dense(n_output))
     model.add(Dense(n_output, activation='softmax'))
-    sgd = optimizers.SGD(lr=0.1, momentum=0.0, decay=0.01, nesterov=False)
+
+    # model.compile(optimizer='sgd', loss=my_loss, metrics=['accuracy'])
+    
     model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     
     return model

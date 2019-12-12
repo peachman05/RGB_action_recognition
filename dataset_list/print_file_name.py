@@ -10,13 +10,13 @@ def walk2(dirname):
 
 
 # path_dataset = 'F:\\Master Project\\Dataset\\sit_stand\\'
-# path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
-path_dataset = 'F:\\Master Project\\Dataset\\KARD-split\\'
+path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
+# path_dataset = 'F:\\Master Project\\Dataset\\KARD-split\\'
 
 # list_file = walk2(path_dataset)
 # action_list = ['run','sit','stand','standup','walk']
-# action_list = ['run','sit','stand','walk','standup']
-action_list = ['a01','a02','a03','a04','a13','a14']
+action_list = ['run','sit','stand','walk','standup']
+# action_list = ['a01','a02','a03','a04','a13','a14']
 action_id = {}
 for i, name in enumerate(action_list):
     action_id[name] = i

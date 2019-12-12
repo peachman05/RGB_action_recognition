@@ -10,14 +10,15 @@ from tensorflow.python.keras.callbacks import ModelCheckpoint
 dim = (224,224)
 n_sequence = 8
 n_channels = 3
-n_output = 6
+n_output = 5
 
 base_path = 'F:\\Master Project\\'
 # base_path = 'D:\\Peach\\'
 # path_dataset = base_path + 'Dataset\\sit_stand\\'
-# path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset\\'
-path_dataset = base_path + 'Dataset\\KARD-split\\'
-detail_weight = 'KARD-aug-RGBdif'
+path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset\\'
+# path_dataset = base_path + 'Dataset\\KARD-split\\'
+detail_weight = 'BUPT-augment-RGBdiff'
+# detail_weight = 'test'
 
 params = {'dim': dim,
           'batch_size': 2,
@@ -29,18 +30,18 @@ params = {'dim': dim,
 
 # train_txt = "dataset_list/trainlistSit.txt"
 # test_txt = "dataset_list/testlistSit.txt"
-# train_txt = "dataset_list/trainlistBUPT.txt"
-# test_txt = "dataset_list/testlistBUPT.txt"
-train_txt = "dataset_list/trainlistKARD.txt"
-test_txt = "dataset_list/testlistKARD.txt"
+train_txt = "dataset_list/trainlistBUPT.txt"
+test_txt = "dataset_list/testlistBUPT.txt"
+# train_txt = "dataset_list/trainlistKARD.txt"
+# test_txt = "dataset_list/testlistKARD.txt"
 
 train_d = readfile_to_dict(train_txt)
 test_d = readfile_to_dict(test_txt)
 # print(train_d)
 
 # Prepare key
-train_keys = list(train_d.keys()) * 2  # duplicate 100 time
-test_keys = list(test_d.keys()) * 5
+train_keys = list(train_d.keys()) * 1  # duplicate 100 time
+test_keys = list(test_d.keys()) * 2
 # test_keys = list(train_d.keys()) * 500
 
 # Label
@@ -63,7 +64,7 @@ if load_model:
     model.load_weights(weights_path)
 
 ## Set callback
-validate_freq = 4
+validate_freq = 3
 filepath= detail_weight+"-{epoch:02d}-{accuracy:.2f}-{val_accuracy:.2f}.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', verbose=1, save_best_only=True, period=validate_freq)
 callbacks_list = [checkpoint]#[ PlotCallbacks()]

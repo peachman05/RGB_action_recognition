@@ -59,3 +59,24 @@ peach\stand\stand04_16 2
 peach\stand\stand04_17 2
 peach\stand\stand04_18 2
 peach\stand\stand04_19 2
+
+peach\standup\standup04_00 4
+peach\standup\standup04_01 4
+peach\standup\standup04_02 4
+peach\standup\standup04_03 4
+peach\standup\standup04_04 4
+peach\standup\standup04_05 4
+peach\standup\standup04_06 4
+peach\standup\standup04_07 4
+peach\standup\standup04_08 4
+peach\standup\standup04_09 4
+peach\standup\standup04_10 4
+peach\standup\standup04_11 4
+peach\standup\standup04_12 4
+peach\standup\standup04_13 4
+peach\standup\standup04_14 4
+peach\standup\standup04_15 4
+peach\standup\standup04_16 4
+peach\standup\standup04_17 4
+peach\standup\standup04_18 4
+peach\standup\standup04_19 4

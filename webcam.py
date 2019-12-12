@@ -6,10 +6,10 @@ import time
 dim = (224,224)
 n_sequence = 8
 n_channels = 3
-n_output = 6
+n_output = 5
 # weights_path = 'pretrain/MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5'
-weights_path = 'KARD-aug-RGBdif-40-0.92-0.98.hdf5'
-# weights_path = 'BUPT4a-12-0.99-0.98.hdf5' 
+# weights_path = 'KARD-aug-RGBdif-40-0.92-0.98.hdf5'
+weights_path = 'BUPT-augment-RGBdiff-120-0.90-0.91.hdf5' 
 
 ### load model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
@@ -61,9 +61,9 @@ while(cap.isOpened()):
             # print("action:", predict_ind)
 
             # class_label = ['sit','stand','standup']
-            class_label = ['a01','a02','a03','a04','a13','a14']
+            # class_label = ['a01','a02','a03','a04','a13','a14']
             # class_label = ['dribble','shoot','pass','stand']
-            # class_label = ['run','sit','stand','walk']
+            class_label = ['run','sit','stand','walk','standup']
 
             ## fill out noise
             predict_queue[:-1] = predict_queue[1:]

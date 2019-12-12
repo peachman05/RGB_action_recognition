@@ -8,7 +8,7 @@ from model_ML import create_model_pretrain
 dim = (224,224)
 n_sequence = 8
 n_channels = 3
-n_output = 6
+n_output = 5
 batch_size = 1
 def get_sampling_frame( len_frames):   
     '''
@@ -53,13 +53,13 @@ def calculateRGBdiff(sequence_img):
 X = np.empty((batch_size, n_sequence, *dim, n_channels)) # X : (n_samples, *dim, n_channels)
 Y = np.empty((batch_size), dtype=int)
 
-
-action = 'a13'
+sub_folder = 'original'
+action = 'walk'
 base_path = 'F:\\Master Project\\'
 # base_path = 'D:\\Peach\\'
 # path_file = base_path+'Dataset\\sit_stand\\'+action+'\\'+action+'03_04.mp4'
-path_file = base_path+'Dataset\\KARD-split\\'+action+'\\'+action+'_s09_e03.mp4'
-# path_file = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'+action+'\\'+action+'01_01.mp4'
+# path_file = base_path+'Dataset\\KARD-split\\'+action+'\\'+action+'_s09_e03.mp4'
+path_file = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'+sub_folder+'\\'+action+'\\'+action+'01_01.mp4'
 # path_file = 'F:\\Master Project\\Dataset\\BasketBall-RGB\\'+action+'\\'+action+'00.mp4'
 cap = cv2.VideoCapture(path_file)
 length_file = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) # get length of frames,
@@ -81,8 +81,8 @@ cap.release()
 print(X.shape)
 
 ## Predict
-# weights_path = 'pretrain/BUPT-28-0.97-0.98.hdf5'
-weights_path = 'KARD-aug-RGBdif-40-0.92-0.98.hdf5'
+weights_path = 'BUPT-augment-RGBdiff-120-0.90-0.91.hdf5'
+# weights_path = 'KARD-aug-RGBdif-40-0.92-0.98.hdf5'
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 

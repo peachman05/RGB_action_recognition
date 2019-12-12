@@ -11,7 +11,7 @@ from data_helper import readfile_to_dict
 dim = (224,224)
 n_sequence = 4
 n_channels = 3
-n_output = 4
+n_output = 5
 # base_path = 'D:\\Peach\\'
 base_path = 'F:\\Master Project\\'
 # path_dataset = base_path+'Dataset\\sit_stand\\'
@@ -23,21 +23,22 @@ params = {'dim': dim,
           'n_sequence': n_sequence,
           'n_channels': n_channels,
           'path_dataset': path_dataset,
+          'option': 'RGBdiff',
           'shuffle': False}
 
 ## dataset
 test_txt = "dataset_list/testlistBUPT.txt"
 test_d = readfile_to_dict(test_txt)
 labels = test_d.copy()
-num_mul = 1
+num_mul = 3
 print(len(test_d.keys()))
 key_list = list(test_d.keys()) * num_mul
 partition = {'validation': key_list  } # IDs
-validation_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='test')
+# validation_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='test')
 predict_generator = DataGeneratorBKB(partition['validation'] , labels, **params, type_gen='predict')
 
 
-weights_path = 'BUPT-sit-augment-85-0.90-0.84.hdf5' 
+weights_path = 'BUPT-augment-RGBdiff-120-0.90-0.91.hdf5' 
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 
@@ -70,7 +71,7 @@ else:
 
 print(cm)
 # if len(cm) < 4:
-sum = 0
+sum = 0.0
 for i in range(n_output):
     sum += cm[i,i]
 
@@ -83,7 +84,8 @@ print("accuracy:",accuracy)
 # classes = ['ApplyEyeMakeup','Archery','BabyCrawling','Basketball']
 # classes = ['0','1','2','3']
 # classes = ['sit','stand','standup']
-classes = ['run','sit','stand','walk']
+# classes = ['run','sit','stand','walk']
+classes = ['run','sit','stand','walk', 'standup']
 
 df_cm = pd.DataFrame(cm, columns=classes, index=classes)
 df_cm.index.name = 'Actual'
