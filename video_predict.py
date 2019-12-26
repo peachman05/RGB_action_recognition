@@ -10,6 +10,7 @@ n_sequence = 8
 n_channels = 3
 n_output = 5
 batch_size = 1
+
 def get_sampling_frame( len_frames):   
     '''
     Sampling n_sequence frame from video file

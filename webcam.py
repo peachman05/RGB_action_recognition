@@ -9,7 +9,7 @@ n_channels = 3
 n_output = 5
 # weights_path = 'pretrain/MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5'
 # weights_path = 'KARD-aug-RGBdif-40-0.92-0.98.hdf5'
-weights_path = 'BUPT-augment-RGBdiff-120-0.90-0.91.hdf5' 
+weights_path = 'BUPT-2d-addall-equal-RGBdiff-half-72-0.94-0.78.hdf5' 
 
 ### load model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
@@ -24,10 +24,10 @@ def calculateRGBdiff(sequence_img):
     new_sequence = np.zeros((sh[0],sh[1],sh[2],sh[3])) # (frame, w,h,3)
 
     # find RGBdiff frame 1 to last frame
-    for i in range(length-1,0,-1): # count down
+    for i in range(length-1,3,-1): # count down
         new_sequence[i] = cv2.subtract(sequence_img[i],sequence_img[i-1])
     
-    new_sequence[0] = sequence_img[0] # first frame as rgb data
+    new_sequence[:4] = sequence_img[:4] # first frame as rgb data
 
     # for i in range(n_sequence):    
     #     cv2.imshow('Frame',new_sequence[i] )
@@ -48,13 +48,14 @@ while(cap.isOpened()):
     
     if ret == True:
         
-        new_f = cv2.resize(frame, dim)
-        new_f = new_f/255.0
-        new_f = np.reshape(new_f, (1, *new_f.shape))
+        new_f0 = cv2.resize(frame, dim)
+        new_f0 = new_f0/255.0
+        new_f = np.reshape(new_f0, (1, *new_f0.shape))
         frame_window = np.append(frame_window, new_f, axis=0)                
         if frame_window.shape[0] >= n_sequence:
             frame_window_dif = calculateRGBdiff(frame_window)
             frame_window_new = frame_window_dif.reshape(1, *frame_window_dif.shape)            
+            # frame_window_new = frame_window.reshape(1, *frame_window.shape)
             result = model.predict(frame_window_new)
             v_ = result[0]
             predict_ind = np.argmax(v_)
@@ -64,6 +65,7 @@ while(cap.isOpened()):
             # class_label = ['a01','a02','a03','a04','a13','a14']
             # class_label = ['dribble','shoot','pass','stand']
             class_label = ['run','sit','stand','walk','standup']
+            # class_label = ['run','walk','stand']
 
             ## fill out noise
             predict_queue[:-1] = predict_queue[1:]
@@ -71,7 +73,7 @@ while(cap.isOpened()):
             counts = np.bincount(predict_queue)
             if np.max(counts) >= threshold:
                 action_now = np.argmax(counts)
-            if result[0,predict_ind] < 0.4:
+            if False:#result[0,predict_ind] < 0.4:
                 print('no action')
             else:
                 print( "{: <8}  {: <8} {:.2f}".format(class_label[predict_ind],
@@ -82,8 +84,8 @@ while(cap.isOpened()):
             #                 result[0,1],result[0,2]))
 
             frame_window = frame_window[1:n_sequence]
-
-            cv2.imshow('Frame', frame_window_new[0,n_sequence-1])
+            vis = np.concatenate((new_f0, frame_window_new[0,n_sequence-1]), axis=0)
+            cv2.imshow('Frame', vis)
 
         # end_time = time.time()
         # diff_time =end_time - start_time

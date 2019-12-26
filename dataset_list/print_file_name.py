@@ -15,8 +15,11 @@ path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
 
 # list_file = walk2(path_dataset)
 # action_list = ['run','sit','stand','standup','walk']
+# action_list = ['run','sit','stand','walk','standup']
 action_list = ['run','sit','stand','walk','standup']
 # action_list = ['a01','a02','a03','a04','a13','a14']
+# action_list = ['a01','a02','a03','a04','a05','a06','a07','a08','a09',
+#                'a10','a11','a12','a13','a14','a15','a16','a17','a18']
 action_id = {}
 for i, name in enumerate(action_list):
     action_id[name] = i
@@ -32,6 +35,6 @@ for file_path in list_file:
     name_file = name_sp[-1]
     name_folder = name_sp[-2]
     name_bigsub = name_sp[-3]
-    name_sum =  name_folder+'\\'+name_file #name_bigsub+'\\'+name_folder+'\\'+name_file
+    name_sum =  name_bigsub+'/'+name_folder+'/'+name_file
     if extension == 'mp4':
         print(name_sum, action_id[name_folder] )

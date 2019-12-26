@@ -3,14 +3,15 @@ import time
 import winsound
 import os
 
-action_select = 2
-point_view = 4
-run_time = 3 # second
-round = 20
+action_select = 5
+point_view = 3
+run_time = 30 # second
+round = 5
 start = 0
 
+
 path_dataset = 'F:\\Master Project\\Dataset\\sit_stand\\'
-action_list = ['sit','stand','standup','sitdown']
+action_list = ['sit','stand','standup','sitdown','run','walk']
 action = action_list[action_select]
 path_save = path_dataset +'\\'+action+'\\'+action+'{:02d}'.format(point_view)
 fourcc = cv2.VideoWriter_fourcc(*'MP4V')
@@ -26,7 +27,7 @@ for i in range(start,round):
     out = cv2.VideoWriter(name_video, fourcc, 30.0, (width, height))
     # print('----round:',i,'-------')
     print(i,action_list[action_select])
-    for i in range(5,0,-1):
+    for i in range(10,0,-1):
         print("start in:", i)
         winsound.Beep(1000, 100)
         time.sleep(1) 

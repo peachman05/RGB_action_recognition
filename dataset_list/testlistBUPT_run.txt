@@ -1,0 +1,16 @@
+original\run\run01_01 0   
+original\run\run01_02 0   
+original\run\run02_01 0
+original\run\run02_02 0
+
+original\walk\walk01_01 1
+original\walk\walk01_02 1
+original\walk\walk02_01 1
+original\walk\walk02_02 1
+
+original\stand\stand01_01 2
+original\stand\stand01_02_01 2
+original\stand\stand02_01 2
+original\stand\stand02_02 2
+
+

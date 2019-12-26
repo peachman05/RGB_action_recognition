@@ -17,7 +17,7 @@ base_path = 'F:\\Master Project\\'
 # path_dataset = base_path + 'Dataset\\sit_stand\\'
 path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset\\'
 # path_dataset = base_path + 'Dataset\\KARD-split\\'
-detail_weight = 'BUPT-augment-RGBdiff'
+detail_weight = 'BUPT-2d-equalsplit-RGBdif-half'
 # detail_weight = 'test'
 
 params = {'dim': dim,
@@ -41,7 +41,7 @@ test_d = readfile_to_dict(test_txt)
 
 # Prepare key
 train_keys = list(train_d.keys()) * 1  # duplicate 100 time
-test_keys = list(test_d.keys()) * 2
+test_keys = list(test_d.keys()) * 5
 # test_keys = list(train_d.keys()) * 500
 
 # Label
@@ -49,8 +49,8 @@ labels = train_d.copy()
 labels.update(test_d) # Labels 
 
 # # Generators
-training_generator = DataGeneratorBKB(train_keys , labels, **params, type_gen='train')
-validation_generator = DataGeneratorBKB(test_keys , labels, **params, type_gen='test')
+training_generator = DataGeneratorBKB(train_keys[:20], labels, **params, type_gen='train')
+validation_generator = DataGeneratorBKB(test_keys[:20], labels, **params, type_gen='test')
 
 # # Design model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, "MobileNetV2")

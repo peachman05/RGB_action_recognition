@@ -8,10 +8,24 @@ from keras.applications import MobileNet, MobileNetV2, ResNet152V2, Xception
 from keras.regularizers import l2
 from keras.models import Model
 from keras import backend as K
+import tensorflow as tf
+
+tf.config.experimental_run_functions_eagerly(True)
 
 def my_loss( y_true, y_pred ):
     y_pred_softmax  = K.softmax(y_pred) 
     return K.sparse_categorical_crossentropy(y_true, y_pred_softmax)
+
+def mean_pred(y_true, y_pred):
+    print("----------------")
+    y_true = K.print_tensor(y_true, message='y_true = ')
+    y_pred = K.print_tensor(y_pred, message='y_pred = ')
+    y_pred_idx = K.argmax(y_pred, axis=-1)
+    y_pred_idx = K.cast( y_pred_idx, K.dtype(y_true) )
+    print('-------------',K.dtype(y_pred_idx))
+    compare = K.equal(y_true, y_pred_idx)
+    compare = K.print_tensor(compare, message='compare = ')
+    return compare
 
 def create_model(dim, n_sequence, n_channels, n_output):
     model = Sequential()
@@ -102,7 +116,7 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
     # model.add(Dense(n_output))
     model.add(Dense(n_output, activation='softmax'))
 
-    # model.compile(optimizer='sgd', loss=my_loss, metrics=['accuracy'])
+    # model.compile(optimizer='sgd', loss=my_loss, metrics=['sparse_categorical_accuracy'])
     
     model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     

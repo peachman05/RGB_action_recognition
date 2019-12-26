@@ -5,6 +5,7 @@ import os
 from vidaug import augmentors as va
 from matplotlib.pyplot import imread, imshow, show
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from data_helper import calculateRGBdiff
 # from imageai.Detection import ObjectDetection
 
 class DataGeneratorBKB(keras.utils.Sequence):
@@ -85,17 +86,20 @@ class DataGeneratorBKB(keras.utils.Sequence):
 
         # Define maximum sampling rate
         # sample_interval = len_frames//self.n_sequence
-        # start_i = np.random.randint(0, len_frames - sample_interval * self.n_sequence + 1)
+        # start_i = 0 #np.random.randint(0, len_frames - sample_interval * self.n_sequence + 1)
 
         if True:#self.type_gen =='train':
-            random_sample_range = 7
+            random_sample_range = 10
             if random_sample_range*self.n_sequence > len_frames:
                 random_sample_range = len_frames//self.n_sequence
 
             if random_sample_range <= 0:
                 print('test:',random_sample_range, len_frames)
             # Randomly choose sample interval and start frame
-            sample_interval = np.random.randint(3, random_sample_range + 1)
+            if random_sample_range < 3:
+                sample_interval = np.random.randint(1, random_sample_range + 1)
+            else:
+                sample_interval = np.random.randint(3, random_sample_range + 1)
             
             # temp = len_frames - sample_interval * self.n_sequence + 1
             # if temp <= 0:
@@ -130,18 +134,18 @@ class DataGeneratorBKB(keras.utils.Sequence):
             crop_img = extract_picture[max_idx]
         return crop_img
 
-    def calculateRGBdiff(self, sequence_img):
-        'keep first frame as rgb data, other is use RGBdiff for temporal data'
-        length = len(sequence_img)
-        new_sequence = np.zeros((length,self.dim[0],self.dim[1],self.n_channels))
+    # def calculateRGBdiff(self, sequence_img):
+    #     'keep first frame as rgb data, other is use RGBdiff for temporal data'
+    #     length = len(sequence_img)
+    #     new_sequence = np.zeros((length,self.dim[0],self.dim[1],self.n_channels))
 
-        # find RGBdiff frame 1 to last frame
-        for i in range(length-1,0,-1): # count down
-            new_sequence[i] = cv2.subtract(sequence_img[i],sequence_img[i-1])
+    #     # find RGBdiff frame 1 to last frame
+    #     for i in range(length-1,3,-1): # count down
+    #         new_sequence[i] = cv2.subtract(sequence_img[i],sequence_img[i-1])
         
-        new_sequence[0] = sequence_img[0] # first frame as rgb data
+    #     new_sequence[:4] = sequence_img[:4] # first frame as rgb data
 
-        return new_sequence
+    #     return new_sequence
 
     def sequence_augment(self, sequence):
         name_list = ['rotate','width_shift','height_shift',
@@ -194,19 +198,20 @@ class DataGeneratorBKB(keras.utils.Sequence):
 
         for i, ID in enumerate(list_IDs_temp):  # ID is name of file (2 batch)
             path_video = self.path_dataset + ID + '.mp4'
+            # print(path_video)
             path_skeleton = self.path_dataset + ID + '.npy'
             
             
             if self.type_model == '2stream' or self.type_model == 'rgb':
                 cap = cv2.VideoCapture(path_video)    
-                length_file = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))-1 # get how many frames this video have ,-1 because some bug          
+                length_file = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) # get how many frames this video have ,-1 because some bug          
                 
             if self.type_model == '2stream' or self.type_model == 'skeleton':
                 skeleton_data = np.load(path_skeleton)
                 length_file = skeleton_data.shape[0]
 
             index_sampling = self.get_sampling_frame(length_file) # get sampling index  
-                
+            # print(index_sampling)
             if self.type_model == '2stream' or self.type_model == 'rgb':                
                 # Get RGB sequence
                 for j, n_pic in enumerate(index_sampling):
@@ -230,7 +235,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
 
                 if self.option == 'RGBdiff':
                     # print("dddddddddddd")
-                    X1[i,] = self.calculateRGBdiff(X1[i,])
+                    X1[i,] = calculateRGBdiff(X1[i,], 3)
                         
 
             if self.type_model == '2stream' or self.type_model == 'skeleton':
