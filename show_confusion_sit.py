@@ -27,7 +27,7 @@ params = {'dim': dim,
           'shuffle': False}
 
 ## dataset
-test_txt = "dataset_list/testlistBUPT_equal.txt"
+test_txt = "dataset_list/testlistBUPT.txt"
 test_d = readfile_to_dict(test_txt)
 labels = test_d.copy()
 num_mul = 1
@@ -38,7 +38,7 @@ partition = {'validation': key_list  } # IDs
 predict_generator = DataGeneratorBKB(key_list , labels, **params, type_gen='predict')
 
 
-weights_path = 'BUPT-2d-addall-equal-RGBdiff-half-72-0.94-0.78.hdf5' 
+weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 

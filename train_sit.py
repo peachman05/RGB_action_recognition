@@ -8,24 +8,24 @@ from keras.callbacks.callbacks import Callback
 from tensorflow.python.keras.callbacks import ModelCheckpoint
 
 dim = (224,224)
-n_sequence = 8
+n_sequence = 6
 n_channels = 3
 n_output = 5
 
 base_path = 'F:\\Master Project\\'
 # base_path = 'D:\\Peach\\'
 # path_dataset = base_path + 'Dataset\\sit_stand\\'
-path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset\\'
+path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset_crop\\'
 # path_dataset = base_path + 'Dataset\\KARD-split\\'
-detail_weight = 'BUPT-2d-equalsplit-RGBdif-half'
-# detail_weight = 'test'
+# detail_weight = 'BUPT-2d-equalsplit-RGBdif-half' # final BUPT single person
+detail_weight = 'BUPT-RGB-Crop'
 
 params = {'dim': dim,
           'batch_size': 2,
           'n_sequence': n_sequence,
           'n_channels': n_channels,
           'path_dataset': path_dataset,
-          'option': 'RGBdiff',
+        #   'option': 'RGBdiff',
           'shuffle': True}
 
 # train_txt = "dataset_list/trainlistSit.txt"

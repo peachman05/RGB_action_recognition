@@ -235,7 +235,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
 
                 if self.option == 'RGBdiff':
                     # print("dddddddddddd")
-                    X1[i,] = calculateRGBdiff(X1[i,], 3)
+                    X1[i,] = calculateRGBdiff(X1[i,], 0)
                         
 
             if self.type_model == '2stream' or self.type_model == 'skeleton':
