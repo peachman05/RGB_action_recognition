@@ -5,12 +5,13 @@ import time
 from data_helper import calculateRGBdiff
 
 dim = (224,224)
-n_sequence = 8
+n_sequence = 6 #8
 n_channels = 3
 n_output = 5
 # weights_path = 'pretrain/MobileNetV2-BKB-Add3StandSideView-04-0.97-0.94.hdf5'
 # weights_path = 'KARD-aug-RGBdif-40-0.92-0.98.hdf5'
-weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
+#weights_path = 'pretrain/BUPT-2d-equalsplit-RGBdif-72-0.98-0.90_finalBUPT.hdf5' 
+weights_path = 'BUPT-RGB-Crop-alpha-035-210-0.93-0.92.hdf5'  
 
 ### load model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
@@ -35,7 +36,7 @@ action_now = 1 # stand
 
 cap = cv2.VideoCapture(0) 
 
-start_time = time.time()
+start_FPS_time = time.time()
 while(cap.isOpened()):
     ret, frame = cap.read()  
     
@@ -111,10 +112,10 @@ while(cap.isOpened()):
             # cv2.imshow('Frame', vis)
             cv2.imshow('Frame', frame)
 
-        # end_time = time.time()
-        # diff_time =end_time - start_time
-        # print("FPS:",1/diff_time)
-        # start_time = end_time
+        end_FPS_time = time.time()
+        diff_time = end_FPS_time - start_FPS_time
+        print("FPS:",1/diff_time)
+        start_FPS_time = end_FPS_time
 
         # Press Q on keyboard to  exit
         if cv2.waitKey(100) & 0xFF == ord('q'):

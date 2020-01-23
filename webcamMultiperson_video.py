@@ -12,7 +12,7 @@ n_output = 5
 
 # weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
 #weights_path =  'BUPT-RGB-Crop-96-0.92-0.88.hdf5' 
-weights_path = 'BUPT-RGB-Crop-alpha-035-addDTS-36-0.94-0.81.hdf5' 
+weights_path = 'BUPT-RGB-Crop-alpha-035-210-0.93-0.92.hdf5' 
 ### load model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
@@ -43,17 +43,19 @@ custom_objects = detector.CustomObjects(person=True)
 
 
 ### Main
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("C:/Users/peachman/Desktop/walk06_03.mp4")
 
 # Crop setting
 width  = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))   # float
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))  # float
 length_x_q = []
 length_y_q = []
-max_length = 15
+max_length = 30
 mid_x_q = []
 mid_y_q = []
-max_mid = 5
+max_mid = 6
+
+cap.set(cv2.CAP_PROP_POS_FRAMES, 500)
 
 start_FPS_time = time.time()
 while(cap.isOpened()):
@@ -106,8 +108,6 @@ while(cap.isOpened()):
             new_y2 = min( int( new_mid_y + new_length_y + new_length_y*0.3 ), height-1 )
 
             crop_image = frame[new_y1:new_y2, new_x1:new_x2] #extract_image[max_idx]
-
-            # crop_image = extract_image[max_idx]
             new_f0 = cv2.resize(crop_image, dim)
             new_f0 = new_f0/255.0
             new_f = np.reshape(new_f0, (1, *new_f0.shape))
@@ -146,8 +146,9 @@ while(cap.isOpened()):
                     if dif_time > 0.05: # wait 0.5 second
                         state = RUN_STATE
                         previous_action = new_action
-                
+
                 font = cv2.FONT_HERSHEY_SIMPLEX
+
                 cv2.rectangle(frame,(new_x1,new_y1),(new_x2,new_y2),(0,255,0),2)
                 cv2.putText(frame, text_show, (10,450), font, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
 

@@ -4,18 +4,19 @@ import matplotlib.pyplot as plt
 import seaborn as sn
 import numpy as np
 
-from data_gen_bkb import DataGeneratorBKB
+from data_gen_bkb import DataGeneratorBKB 
 from model_ML import create_model_pretrain
 from data_helper import readfile_to_dict
 
 dim = (224,224)
-n_sequence = 8
+n_sequence = 6
 n_channels = 3
 n_output = 5
 # base_path = 'D:\\Peach\\'
 base_path = 'F:\\Master Project\\'
 # path_dataset = base_path+'Dataset\\sit_stand\\'
-path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset\\'
+# path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset_crop\\'
+path_dataset = base_path + 'Dataset\\sit_stand_crop02\\'
 
 params = {'dim': dim,
           'batch_size': 1,
@@ -23,14 +24,14 @@ params = {'dim': dim,
           'n_sequence': n_sequence,
           'n_channels': n_channels,
           'path_dataset': path_dataset,
-          'option': 'RGBdiff',
+        #   'option': 'RGBdiff',
           'shuffle': False}
 
 ## dataset
-test_txt = "dataset_list/testlistBUPT.txt"
+test_txt = "dataset_list/testlistBUPT_crop.txt"
 test_d = readfile_to_dict(test_txt)
 labels = test_d.copy()
-num_mul = 1
+num_mul = 5
 print(len(test_d.keys()))
 key_list = list(test_d.keys()) * num_mul
 partition = {'validation': key_list  } # IDs
@@ -38,7 +39,11 @@ partition = {'validation': key_list  } # IDs
 predict_generator = DataGeneratorBKB(key_list , labels, **params, type_gen='predict')
 
 
-weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
+# weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
+# weights_path = 'BUPT-RGB-Crop-96-0.92-0.88.hdf5' 
+# weights_path = 'BUPT-RGB-Crop-alpha-035-210-0.93-0.92.hdf5' 
+weights_path = 'BUPT-RGB-Crop-alpha-035-addDTS02-300-0.96-0.51.hdf5'
+
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
 
@@ -53,7 +58,7 @@ test_y = np.array(list(test_d.values()) * num_mul)
 print("-----------")
 print(y_pred_prob.shape)
 print(len(test_y))
-
+ 
 y_pred = np.argmax(y_pred_prob, axis=1)
 normalize = True
 

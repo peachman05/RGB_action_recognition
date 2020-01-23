@@ -93,7 +93,8 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
     elif pretrain_name == 'MobileNetV2':
         model.add( 
             TimeDistributed(
-                MobileNetV2(weights='imagenet',include_top=False), 
+                #MobileNetV2(weights='imagenet',include_top=False), 
+                MobileNetV2(weights='imagenet',include_top=False, alpha= 0.35),
                 input_shape=(n_sequence, *dim, n_channels) # 5 images...
             )
         )

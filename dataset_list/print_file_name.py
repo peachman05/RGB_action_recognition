@@ -10,7 +10,8 @@ def walk2(dirname):
 
 
 # path_dataset = 'F:\\Master Project\\Dataset\\sit_stand\\'
-path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
+# path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
+path_dataset = 'F:\\Master Project\\Dataset\\sit_stand_crop02\\peach\\'
 # path_dataset = 'F:\\Master Project\\Dataset\\KARD-split\\'
 
 # list_file = walk2(path_dataset)

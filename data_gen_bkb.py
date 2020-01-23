@@ -100,7 +100,9 @@ class DataGeneratorBKB(keras.utils.Sequence):
                 sample_interval = np.random.randint(1, random_sample_range + 1)
             else:
                 sample_interval = np.random.randint(3, random_sample_range + 1)
-            
+
+            # sample_interval = np.random.randint(1, random_sample_range + 1)
+
             # temp = len_frames - sample_interval * self.n_sequence + 1
             # if temp <= 0:
             #     print(temp, len_frames)
