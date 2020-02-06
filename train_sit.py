@@ -7,38 +7,40 @@ from data_helper import readfile_to_dict
 from keras.callbacks.callbacks import Callback
 from tensorflow.python.keras.callbacks import ModelCheckpoint
 
-dim = (224,224)
-n_sequence = 6
+dim = (120,120)
+n_sequence = 14 #6
 n_channels = 3
-n_output = 5
+n_output = 5    
 
 base_path = 'F:\\Master Project\\'
 # base_path = 'D:\\Peach\\'
 # path_dataset = base_path + 'Dataset\\sit_stand\\'
 # path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset_crop\\'
-path_dataset = base_path + 'Dataset\\sit_stand_crop02\\'
+path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset\\'
+# path_dataset = base_path + 'Dataset\\sit_stand_crop02\\'
 # path_dataset = base_path + 'Dataset\\KARD-split\\'
 # detail_weight = 'BUPT-2d-equalsplit-RGBdif-half' # final BUPT single person
-detail_weight = 'BUPT-RGB-Crop-alpha-035-addDTS02'
+#detail_weight = 'BUPT-RGB-Crop-alpha035-dataset02-fixaugment'#'BUPT-RGB-Crop-alpha-addDTS05'
+detail_weight = 'BUPT-Conv3D-RGBdiff-dataset02'
 
 params = {'dim': dim,
           'batch_size': 4,
           'n_sequence': n_sequence,
           'n_channels': n_channels,
           'path_dataset': path_dataset,
-        #   'option': 'RGBdiff',
+          'option': 'RGBdiff',
           'shuffle': True}
 
 # train_txt = "dataset_list/trainlistSit.txt"
 # test_txt = "dataset_list/testlistSit.txt"
-train_txt = "dataset_list/trainlistBUPT_crop.txt"
-test_txt = "dataset_list/testlistBUPT_crop.txt"
+train_txt = "dataset_list/trainlistBUPT_crop02.txt"
+test_txt = "dataset_list/testlistBUPT_crop02.txt"
 # train_txt = "dataset_list/trainlistKARD.txt"
 # test_txt = "dataset_list/testlistKARD.txt"
 
 train_d = readfile_to_dict(train_txt)
 test_d = readfile_to_dict(test_txt)
-# print(train_d)
+# print(train_d) 
 
 # Prepare key
 train_keys = list(train_d.keys()) * 1  # duplicate 100 time
@@ -60,8 +62,8 @@ load_model = False
 start_epoch = 0
 if load_model:
     # weights_path = 'pretrain/mobileNetV2-BKB-3ds-48-0.55.hdf5' 
-    weights_path = 'BUPT-RGB-Crop-alpha-035-210-0.93-0.92.hdf5' #'KARD-aug-RGBdif-01-0.13-0.17.hdf5'   
-    start_epoch = 0
+    weights_path = 'BUPT-RGB-Crop-alpha035-dataset02-fixaugment-27-0.72-0.29.hdf5' #'KARD-aug-RGBdif-01-0.13-0.17.hdf5'   
+    start_epoch = 27
     model.load_weights(weights_path)
 
 ## Set callback
@@ -77,6 +79,7 @@ model.fit_generator(generator=training_generator,
                     callbacks=callbacks_list,   
                     max_queue_size=1,
                     initial_epoch=start_epoch,                 
-                    validation_freq=validate_freq
+                    validation_freq=validate_freq,
+                    # workers=0
                     )
 

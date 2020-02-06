@@ -12,7 +12,7 @@ n_output = 5
 
 # weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
 #weights_path =  'BUPT-RGB-Crop-96-0.92-0.88.hdf5' 
-weights_path = 'BUPT-RGB-Crop-alpha-035-210-0.93-0.92.hdf5' 
+weights_path = 'BUPT-RGB-Crop-alpha-addDTS05-129-0.91-0.70.hdf5' 
 ### load model
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
@@ -41,9 +41,14 @@ detector.setModelPath(model_path)
 detector.loadModel(detection_speed="flash") #"normal"(default), "fast", "faster" , "fastest" and "flash".
 custom_objects = detector.CustomObjects(person=True)
 
-
+sub_folder = 'peach'
+action = 'sit'
+base_path = 'F:\\Master Project\\'
+path_file = base_path+'Dataset\\sit_stand\\'+action+'\\'+action+'04_05.mp4'
 ### Main
-cap = cv2.VideoCapture("C:/Users/peachman/Desktop/walk06_03.mp4")
+# cap = cv2.VideoCapture("C:/Users/peachman/Desktop/walk05_15.mp4")
+cap = cv2.VideoCapture(path_file)
+print(path_file)
 
 # Crop setting
 width  = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))   # float
@@ -55,7 +60,7 @@ mid_x_q = []
 mid_y_q = []
 max_mid = 6
 
-cap.set(cv2.CAP_PROP_POS_FRAMES, 500)
+# cap.set(cv2.CAP_PROP_POS_FRAMES, 500)
 
 start_FPS_time = time.time()
 while(cap.isOpened()):

@@ -28,10 +28,10 @@ params = {'dim': dim,
           'shuffle': False}
 
 ## dataset
-test_txt = "dataset_list/testlistBUPT_crop.txt"
+test_txt = "dataset_list/testlistBUPT_crop02.txt"
 test_d = readfile_to_dict(test_txt)
 labels = test_d.copy()
-num_mul = 5
+num_mul = 1
 print(len(test_d.keys()))
 key_list = list(test_d.keys()) * num_mul
 partition = {'validation': key_list  } # IDs
@@ -42,7 +42,8 @@ predict_generator = DataGeneratorBKB(key_list , labels, **params, type_gen='pred
 # weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
 # weights_path = 'BUPT-RGB-Crop-96-0.92-0.88.hdf5' 
 # weights_path = 'BUPT-RGB-Crop-alpha-035-210-0.93-0.92.hdf5' 
-weights_path = 'BUPT-RGB-Crop-alpha-035-addDTS02-300-0.96-0.51.hdf5'
+weights_path = 'BUPT-RGB-Crop-alpha-addDTS05-129-0.91-0.70.hdf5'
+# weights_path = 'BUPT-RGB-Crop-alpha-addDTS03-300-0.97-0.63.hdf5'
 
 model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model.load_weights(weights_path)
@@ -80,6 +81,8 @@ else:
 accuracy = sum / all_y
 # # accuracy = (cm[0,0] + cm[1,1]) / 4
 print("accuracy:",accuracy)
+
+print(cm)
 
 # classes = ['ApplyEyeMakeup','Archery','BabyCrawling','Basketball']
 # classes = ['0','1','2','3']

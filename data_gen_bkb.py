@@ -164,12 +164,15 @@ class DataGeneratorBKB(keras.utils.Sequence):
         for i in pick_idx:
             if dictkey_list[i] == 'theta':
                 dict_input['theta'] = np.random.randint(-10, 10)
+                # dict_input['theta'] = np.random.randint(-5,5)
 
             elif dictkey_list[i] == 'ty': # width_shift
                 dict_input['ty'] = np.random.randint(-60, 60)
+                # dict_input['ty'] = np.random.randint(-20,20)
 
             elif dictkey_list[i] == 'tx': # height_shift
                 dict_input['tx'] = np.random.randint(-30, 30)
+                # dict_input['tx'] = np.random.randint(-10,10)
 
             elif dictkey_list[i] == 'brightness': 
                 dict_input['brightness'] = np.random.uniform(0.15,1)
@@ -179,9 +182,11 @@ class DataGeneratorBKB(keras.utils.Sequence):
 
             elif dictkey_list[i] == 'zy': # width_zoom
                 dict_input['zy'] = np.random.uniform(0.5,1.5)
+                # dict_input['zy'] = np.random.uniform(0.9,1.3) 
 
             elif dictkey_list[i] == 'zx': # height_zoom
                 dict_input['zx'] = np.random.uniform(0.5,1.5)
+                # dict_input['zx'] = np.random.uniform(0.9,1.3) 
         
         sh = sequence.shape
         new_sequence = np.zeros((sh[0],sh[1],sh[2],sh[3]))
@@ -251,6 +256,10 @@ class DataGeneratorBKB(keras.utils.Sequence):
             Y[i] = self.labels[ID]
             if self.type_model == '2stream' or self.type_model == 'rgb':
                 cap.release()        
+
+            # for i_frame in range(self.n_sequence):
+            #     cv2.imshow('Frame', X1[i,i_frame])
+            #     cv2.waitKey(1000)
 
         if self.type_model == 'rgb':
             X = X1

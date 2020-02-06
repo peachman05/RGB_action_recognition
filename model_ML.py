@@ -123,6 +123,26 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
     
     return model
 
+def create_model_Conv3D(dim, n_sequence, n_channels, n_output):
+    model = Sequential()
+    model.add(  Conv3D(24, kernel_size=(3, 3, 3), activation='relu',
+             kernel_initializer='he_uniform',
+             input_shape=(dim[0],dim[1],n_sequence,n_channels))
+            )    
+    model.add(MaxPooling3D(pool_size=(2, 2, 2)))
+    model.add(Conv3D(32, kernel_size=(3, 3, 3), activation='relu',
+            kernel_initializer='he_uniform')
+            )            
+    model.add(MaxPooling3D(pool_size=(2, 2, 2)))
+    model.add(Flatten())
+    model.add(Dense(64, activation='relu'))
+    model.add(Dropout(.4))
+    model.add(Dense(24, activation='relu'))
+    model.add(Dropout(.4))
+    model.add(Dense(n_output, activation='softmax'))
+    model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+
 def create_model_skeleton(n_sequence, n_joint, n_output):
     skeleton_stream = Input(shape=(n_sequence, n_joint*3 ), name='skleton_stream')
     skeleton_lstm = CuDNNLSTM(50, return_sequences=False)(skeleton_stream)
