@@ -232,9 +232,9 @@ class DataGeneratorBKB(keras.utils.Sequence):
                     
 
                 if self.type_gen =='train':
-                    X1[i,] = self.sequence_augment(X1[i,])/255.0
+                    X1[i,] = self.sequence_augment(X1[i,])/255.0#*2-1
                 else:
-                    X1[i,] = X1[i,]/255.0
+                    X1[i,] = X1[i,]/255.0#*2-1
 
                 # cv2.imshow('imgae',X1[i,0])
                 # cv2.waitKey(2000)

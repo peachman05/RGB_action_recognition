@@ -1,27 +1,28 @@
 import numpy as np
 
 from data_gen_bkb import DataGeneratorBKB
-from model_ML import create_model_pretrain
+from model_ML import create_model_pretrain, create_model_Conv3D
 from data_helper import readfile_to_dict
 
 from keras.callbacks.callbacks import Callback
 from tensorflow.python.keras.callbacks import ModelCheckpoint
 
-dim = (120,120)
-n_sequence = 14 #6
+dim = (224,224) # เพิ่งเปลี่ยนจาก 120
+n_sequence = 6 # เพิ่งเปลี่ยน จาก 10
 n_channels = 3
 n_output = 5    
+model_type = ''#'Conv3D'
 
 base_path = 'F:\\Master Project\\'
 # base_path = 'D:\\Peach\\'
 # path_dataset = base_path + 'Dataset\\sit_stand\\'
 # path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset_crop\\'
-path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset\\'
+# path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset\\'
 # path_dataset = base_path + 'Dataset\\sit_stand_crop02\\'
-# path_dataset = base_path + 'Dataset\\KARD-split\\'
+path_dataset = base_path + 'Dataset\\KARD-split\\'
 # detail_weight = 'BUPT-2d-equalsplit-RGBdif-half' # final BUPT single person
 #detail_weight = 'BUPT-RGB-Crop-alpha035-dataset02-fixaugment'#'BUPT-RGB-Crop-alpha-addDTS05'
-detail_weight = 'BUPT-Conv3D-RGBdiff-dataset02'
+detail_weight = 'BUPT-RGBdiff-KARD'#'BUPT-Conv3D-dataset02'
 
 params = {'dim': dim,
           'batch_size': 4,
@@ -33,10 +34,10 @@ params = {'dim': dim,
 
 # train_txt = "dataset_list/trainlistSit.txt"
 # test_txt = "dataset_list/testlistSit.txt"
-train_txt = "dataset_list/trainlistBUPT_crop02.txt"
-test_txt = "dataset_list/testlistBUPT_crop02.txt"
-# train_txt = "dataset_list/trainlistKARD.txt"
-# test_txt = "dataset_list/testlistKARD.txt"
+# train_txt = "dataset_list/trainlistBUPT_crop02.txt"
+# test_txt = "dataset_list/testlistBUPT_crop02.txt"
+train_txt = "dataset_list/trainlistKARD.txt"
+test_txt = "dataset_list/testlistKARD.txt"
 
 train_d = readfile_to_dict(train_txt)
 test_d = readfile_to_dict(test_txt)
@@ -56,14 +57,17 @@ training_generator = DataGeneratorBKB(train_keys, labels, **params, type_gen='tr
 validation_generator = DataGeneratorBKB(test_keys, labels, **params, type_gen='test')
 
 # # Design model
-model = create_model_pretrain(dim, n_sequence, n_channels, n_output, "MobileNetV2")
- 
+if model_type == 'Conv3D':
+    model = create_model_Conv3D(dim, n_sequence, n_channels, n_output)    
+else:
+    model = create_model_pretrain(dim, n_sequence, n_channels, n_output, "MobileNetV2")
+    
 load_model = False
 start_epoch = 0
 if load_model:
     # weights_path = 'pretrain/mobileNetV2-BKB-3ds-48-0.55.hdf5' 
-    weights_path = 'BUPT-RGB-Crop-alpha035-dataset02-fixaugment-27-0.72-0.29.hdf5' #'KARD-aug-RGBdif-01-0.13-0.17.hdf5'   
-    start_epoch = 27
+    weights_path = 'BUPT-Conv3D-dataset02-transfer-0-0-0.hdf5' #'KARD-aug-RGBdif-01-0.13-0.17.hdf5'   
+    start_epoch = 0
     model.load_weights(weights_path)
 
 ## Set callback

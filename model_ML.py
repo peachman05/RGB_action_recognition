@@ -1,6 +1,6 @@
 from keras import Sequential
 from keras.layers import CuDNNLSTM, LSTM
-from keras.layers import Dense, Input, TimeDistributed, Conv2D
+from keras.layers import Dense, Input, TimeDistributed, Conv2D, Conv3D, MaxPooling3D
 from keras.layers import Dropout, concatenate, Flatten, GlobalAveragePooling2D, MaxPooling2D
 from keras import optimizers
 from keras.applications import MobileNet, MobileNetV2, ResNet152V2, Xception
@@ -93,8 +93,8 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
     elif pretrain_name == 'MobileNetV2':
         model.add( 
             TimeDistributed(
-                #MobileNetV2(weights='imagenet',include_top=False), 
-                MobileNetV2(weights='imagenet',include_top=False, alpha= 0.35),
+                MobileNetV2(weights='imagenet',include_top=False), 
+                #MobileNetV2(weights='imagenet',include_top=False, alpha= 0.35),
                 input_shape=(n_sequence, *dim, n_channels) # 5 images...
             )
         )
@@ -125,12 +125,12 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
 
 def create_model_Conv3D(dim, n_sequence, n_channels, n_output):
     model = Sequential()
-    model.add(  Conv3D(24, kernel_size=(3, 3, 3), activation='relu',
+    model.add(  Conv3D(32, kernel_size=(3, 3, 3), activation='relu',
              kernel_initializer='he_uniform',
-             input_shape=(dim[0],dim[1],n_sequence,n_channels))
+             input_shape=(n_sequence,dim[0],dim[1],n_channels))
             )    
     model.add(MaxPooling3D(pool_size=(2, 2, 2)))
-    model.add(Conv3D(32, kernel_size=(3, 3, 3), activation='relu',
+    model.add(Conv3D(24, kernel_size=(3, 3, 3), activation='relu',
             kernel_initializer='he_uniform')
             )            
     model.add(MaxPooling3D(pool_size=(2, 2, 2)))
@@ -142,6 +142,7 @@ def create_model_Conv3D(dim, n_sequence, n_channels, n_output):
     model.add(Dense(n_output, activation='softmax'))
     model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
+    return model
 
 def create_model_skeleton(n_sequence, n_joint, n_output):
     skeleton_stream = Input(shape=(n_sequence, n_joint*3 ), name='skleton_stream')
