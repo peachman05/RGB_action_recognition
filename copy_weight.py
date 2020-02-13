@@ -2,11 +2,11 @@ from model_ML import create_model_Conv3D
 from keras import Sequential
 from keras.applications import MobileNetV2
 
-dim = (120,120)
+dim = (224,224)
 n_sequence = 10
 n_channels = 3
-n_output = 5 
-detail_weight = 'BUPT-Conv3D-dataset02-transfer'   
+n_output = 6 
+detail_weight = 'BUPT-Conv3D-KARD-transfer'  
 
 # new_weight = np.zeros((3,3,3,3,32))
 

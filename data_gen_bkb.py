@@ -2,7 +2,7 @@ import numpy as np
 import keras
 import cv2
 import os
-from vidaug import augmentors as va
+# from vidaug import augmentors as va
 from matplotlib.pyplot import imread, imshow, show
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from data_helper import calculateRGBdiff
@@ -75,7 +75,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
         else:
             return X, y
 
-    def get_sampling_frame(self, len_frames):   
+    def get_sampling_frame(self, len_frames, path_video):   
         '''
         Sampling n_sequence frame from video file
         Input: 
@@ -94,7 +94,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
                 random_sample_range = len_frames//self.n_sequence
 
             if random_sample_range <= 0:
-                print('test:',random_sample_range, len_frames)
+                print('test:',random_sample_range, len_frames, path_video)
             # Randomly choose sample interval and start frame
             if random_sample_range < 3:
                 sample_interval = np.random.randint(1, random_sample_range + 1)
@@ -208,6 +208,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
             # print(path_video)
             path_skeleton = self.path_dataset + ID + '.npy'
             
+            # print(path_video)
             
             if self.type_model == '2stream' or self.type_model == 'rgb':
                 cap = cv2.VideoCapture(path_video)    
@@ -217,7 +218,7 @@ class DataGeneratorBKB(keras.utils.Sequence):
                 skeleton_data = np.load(path_skeleton)
                 length_file = skeleton_data.shape[0]
 
-            index_sampling = self.get_sampling_frame(length_file) # get sampling index  
+            index_sampling = self.get_sampling_frame(length_file, path_video) # get sampling index  
             # print(index_sampling)
             if self.type_model == '2stream' or self.type_model == 'rgb':                
                 # Get RGB sequence
