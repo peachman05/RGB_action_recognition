@@ -63,7 +63,7 @@ validation_generator = DataGeneratorBKB(test_keys, labels, **params, type_gen='t
 if model_type == 'Conv3D':
     model = create_model_Conv3D(dim, n_sequence, n_channels, n_output)    
 else:
-    model = create_model_pretrain(dim, n_sequence, n_channels, n_output, "MobileNetV2")
+    model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 1.0)
     
 load_model = False
 start_epoch = 0

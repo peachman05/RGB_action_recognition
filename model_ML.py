@@ -73,34 +73,39 @@ def create_model(dim, n_sequence, n_channels, n_output):
 
     return model
 
-def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
+def create_model_pretrain(dim, n_sequence, n_channels, n_output, alpha):
     model = Sequential()
     # after having Conv2D...
-    if pretrain_name == 'ResNet152V2':
-        model.add( 
+    # if pretrain_name == 'ResNet152V2':
+    #     model.add( 
+    #         TimeDistributed(
+    #             ResNet152V2(weights='imagenet',include_top=False), 
+    #             input_shape=(n_sequence, *dim, n_channels) # 5 images...
+    #         )
+    #     )
+    # elif pretrain_name == 'Xception':
+    #     model.add( 
+    #         TimeDistributed(
+    #             Xception(weights='imagenet',include_top=False), 
+    #             input_shape=(n_sequence, *dim, n_channels) # 5 images...
+    #         )
+    #     )
+    # elif pretrain_name == 'MobileNetV2':
+    #     model.add( 
+    #         TimeDistributed(
+    #             # MobileNetV2(weights='imagenet',include_top=False), 
+    #             MobileNetV2(weights='imagenet',include_top=False, alpha= alpha),
+    #             input_shape=(n_sequence, *dim, n_channels) # 5 images...
+    #         )
+    #     )
+    # else:
+    #     raise ValueError('pretrain_name is incorrect')
+    model.add( 
             TimeDistributed(
-                ResNet152V2(weights='imagenet',include_top=False), 
+                MobileNetV2(weights='imagenet',include_top=False, alpha= alpha),
                 input_shape=(n_sequence, *dim, n_channels) # 5 images...
             )
         )
-    elif pretrain_name == 'Xception':
-        model.add( 
-            TimeDistributed(
-                Xception(weights='imagenet',include_top=False), 
-                input_shape=(n_sequence, *dim, n_channels) # 5 images...
-            )
-        )
-    elif pretrain_name == 'MobileNetV2':
-        model.add( 
-            TimeDistributed(
-                MobileNetV2(weights='imagenet',include_top=False), 
-                #MobileNetV2(weights='imagenet',include_top=False, alpha= 0.35),
-                input_shape=(n_sequence, *dim, n_channels) # 5 images...
-            )
-        )
-    else:
-        raise ValueError('pretrain_name is incorrect')
-
     model.add(
         TimeDistributed(
             GlobalAveragePooling2D() # Or Flatten()
@@ -125,18 +130,18 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, pretrain_name):
 
 def create_model_Conv3D(dim, n_sequence, n_channels, n_output):
     model = Sequential()
-    model.add(  Conv3D(32, kernel_size=(3, 3, 3), activation='relu',
+    model.add(  Conv3D(16, kernel_size=(3, 3, 3), activation='relu',
              kernel_initializer='he_uniform',
              input_shape=(n_sequence,dim[0],dim[1],n_channels))
             )    
     model.add(MaxPooling3D(pool_size=(2, 2, 2)))
-    model.add(Conv3D(24, kernel_size=(3, 3, 3), activation='relu',
+    model.add(Conv3D(8, kernel_size=(3, 3, 3), activation='relu',
             kernel_initializer='he_uniform')
             )            
     model.add(MaxPooling3D(pool_size=(2, 2, 2)))
     model.add(Flatten())
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(.4))
+    # model.add(Dense(64, activation='relu'))
+    # model.add(Dropout(.4))
     model.add(Dense(24, activation='relu'))
     model.add(Dropout(.4))
     model.add(Dense(n_output, activation='softmax'))

@@ -1,20 +1,21 @@
 import cv2
 import numpy as np
-from model_ML import create_model_pretrain
+from model_ML import create_model_pretrain, create_model_Conv3D
 import time
 from data_helper import calculateRGBdiff
 from imageai.Detection import ObjectDetection
 
-dim = (224,224)
-n_sequence = 6
+dim = (120,120)
+n_sequence = 10
 n_channels = 3
 n_output = 5
 
 # weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
 #weights_path =  'BUPT-RGB-Crop-96-0.92-0.88.hdf5' 
-weights_path = 'BUPT-RGB-Crop-alpha-035-addDTS-36-0.94-0.81.hdf5' 
+weights_path = 'BUPT-RGBdiff-crop-Conv3D-verytiny-dataset02-1160-0.85-0.79.hdf5' 
 ### load model
-model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
+# model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
+model = create_model_Conv3D(dim, n_sequence, n_channels, n_output) 
 model.load_weights(weights_path)
 
 print(model.summary())
@@ -50,10 +51,10 @@ width  = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))   # float
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))  # float
 length_x_q = []
 length_y_q = []
-max_length = 15
+max_length = 3
 mid_x_q = []
 mid_y_q = []
-max_mid = 5
+max_mid = 3
 
 start_FPS_time = time.time()
 while(cap.isOpened()):
@@ -65,8 +66,8 @@ while(cap.isOpened()):
                         input_type='array', input_image=frame, output_type='array',
                         minimum_percentage_probability=20,
                         extract_detected_objects = True )
-        if len(extract_image) > 0:
 
+        if len(extract_image) > 0:
             # choose picture
             max_prob = 0
             max_idx = 0
@@ -113,9 +114,9 @@ while(cap.isOpened()):
             new_f = np.reshape(new_f0, (1, *new_f0.shape))
             frame_window = np.append(frame_window, new_f, axis=0)                
             if frame_window.shape[0] >= n_sequence:
-                # frame_window_dif = calculateRGBdiff(frame_window.copy(),0)
-                # frame_window_new = frame_window_dif.reshape(1, *frame_window_dif.shape)            
-                frame_window_new = frame_window.reshape(1, *frame_window.shape)
+                frame_window_dif = calculateRGBdiff(frame_window.copy(),0)
+                frame_window_new = frame_window_dif.reshape(1, *frame_window_dif.shape)            
+                # frame_window_new = frame_window.reshape(1, *frame_window.shape)
                 result = model.predict(frame_window_new)
                 output = result[0]
                 predict_ind = np.argmax(output)
@@ -136,7 +137,9 @@ while(cap.isOpened()):
                         if previous_action == -1:
                             text_show = 'no action'                                              
                         else:
-                            text_show = "{: <22}  {:.2f} ".format(class_text[previous_action],
+                            # text_show = "{: <22}  {:.2f} ".format(class_text[previous_action],
+                            #             output[previous_action] )
+                            text_show = "{: <10}  {:.2f} ".format(class_text[previous_action],
                                         output[previous_action] )
                         print(text_show)  
 
@@ -149,7 +152,8 @@ while(cap.isOpened()):
                 
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 cv2.rectangle(frame,(new_x1,new_y1),(new_x2,new_y2),(0,255,0),2)
-                cv2.putText(frame, text_show, (10,450), font, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
+                cv2.putText(frame, text_show, (new_x1,new_y1-10), font, 0.8, (0, 255, 0), 1, cv2.LINE_AA)
+                # cv2.putText(frame, text_show, (10,450), font, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
 
                 frame_window = frame_window[1:n_sequence]
                 # vis = np.concatenate((new_f0, frame_window_new[0,n_sequence-1]), axis=0)
@@ -166,8 +170,9 @@ while(cap.isOpened()):
         start_FPS_time = end_FPS_time
 
         # Press Q on keyboard to  exit
-        if cv2.waitKey(100) & 0xFF == ord('q'):
-            break 
+        key = cv2.waitKey(10)
+        if key == ord('q'):
+                break 
     else: 
         break
  
