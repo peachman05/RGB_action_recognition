@@ -13,7 +13,7 @@ n_output = 5
 
 # weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
 #weights_path =  'BUPT-RGB-Crop-96-0.92-0.88.hdf5' 
-weights_path = 'BUPT-RGBdiff-crop-Conv3D-verytiny-dataset02-1160-0.85-0.79.hdf5' 
+weights_path = 'BUPT-RGBdiff-crop-Conv3D-verytiny-dataset02-1600-0.88-0.77.hdf5' 
 ### load model
 # model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model = create_model_Conv3D(dim, n_sequence, n_channels, n_output) 
@@ -29,8 +29,9 @@ cordinate = np.ones((max_person, 4)) # x1,y1,x2,y2
 RUN_STATE = 0
 WAIT_STATE = 1
 SET_NEW_ACTION_STATE = 2
-state = RUN_STATE # 
-previous_action = -1 # no action
+state = [RUN_STATE] * max_person # 
+previous_action = [-1] * max_person  # no action
+start_time = [0] * max_person
 text_show = 'no action'
 
 class_text = ['run','sit','stand','walk','standup']
@@ -199,15 +200,42 @@ while(cap.isOpened()):
                     result = model.predict(frame_window_new)
                     output = result[0]
                     predict_ind = np.argmax(output)
+
+                    ## Noise remove
+                    if output[predict_ind] < 0.25:
+                        new_action = -1 # no action(noise)
+                    else:
+                        new_action = predict_ind # action detect            
+
+                    ### Use State Machine to delete noise between action(just for stability)
+                    ### RUN_STATE: normal state, change to wait state when action is changed
+                    if state[i] == RUN_STATE:
+                        if new_action != previous_action[i]: # action change
+                            state[i] = WAIT_STATE
+                            start_time[i] = time.time()     
+                        else:
+                            if previous_action[i] == -1:
+                                text_show = 'no action'                                              
+                            else:
+                                text_show = "{:}: {: <2}  {:.2f} ".format(i, class_text[previous_action[i]],
+                                            output[previous_action[i]] )
+                            print(text_show)  
+
+                    ### WAIT_STATE: wait 0.5 second when action from prediction is change to fillout noise
+                    elif state[i] == WAIT_STATE:
+                        dif_time = time.time() - start_time[i]
+                        if dif_time > 0.3: # wait 0.5 second
+                            state[i] = RUN_STATE
+                            previous_action[i] = new_action
                 
                     frame_window[i] = frame_window[i][1:n_sequence]
 
-                    text_show = "{:}: {: <5}  {:.2f} ".format(i,class_text[predict_ind],
-                                            output[predict_ind] )
+                    # text_show = "{:}: {: <5}  {:.2f} ".format(i,class_text[predict_ind],
+                    #                         output[predict_ind] )
                 
                 cv2.rectangle(frame,(new_x1,new_y1),(new_x2,new_y2),(0,255,0),2)                
-                cv2.rectangle(frame,(new_x1-1,new_y1-40),(new_x2+1,new_y1),(0,255,0),-1) # draw background text
-                cv2.putText(frame, text_show, (new_x1,new_y1-10), font, 0.6, (0, 0, 0), 2, cv2.LINE_AA)
+                cv2.rectangle(frame,(new_x1-1,new_y1),(new_x2+1,new_y1+40),(0,255,0),-1) # draw background text
+                cv2.putText(frame, text_show, (new_x1,new_y1+30), font, 0.6, (0, 0, 0), 2, cv2.LINE_AA)
                 
                 # cv2.rectangle(frame,(0,0),(300,400),(0,255,0),2)
                 # intersect_area = calculate_intersection((x1,y1,x2,y2), (0,0,300,400))

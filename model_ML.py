@@ -128,9 +128,10 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, alpha):
     
     return model
 
-def create_model_Conv3D(dim, n_sequence, n_channels, n_output):
+def create_model_Conv3D(dim, n_sequence, n_channels, n_output, set_pretrain=False):
     model = Sequential()
-    model.add(  Conv3D(16, kernel_size=(3, 3, 3), activation='relu',
+    n_first_filter = 16
+    model.add(  Conv3D(n_first_filter, kernel_size=(3, 3, 3), activation='relu',
              kernel_initializer='he_uniform',
              input_shape=(n_sequence,dim[0],dim[1],n_channels))
             )    
@@ -146,6 +147,18 @@ def create_model_Conv3D(dim, n_sequence, n_channels, n_output):
     model.add(Dropout(.4))
     model.add(Dense(n_output, activation='softmax'))
     model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+    if set_pretrain:
+        mobile_model = Sequential()
+        mobile_model.add(MobileNetV2(weights='imagenet',include_top=False))
+
+        weights = model.layers[0].get_weights() # first layer
+        weight_mobile = mobile_model.layers[0].get_weights()[0] # first layer, first weight
+
+        for i in range(3):
+            weights[0][:,:,i,:,:] = weight_mobile[:,:,:,:n_first_filter]
+
+        model.layers[0].set_weights(weights)
 
     return model
 

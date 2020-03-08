@@ -163,16 +163,16 @@ class DataGeneratorBKB(keras.utils.Sequence):
         dict_input = {}
         for i in pick_idx:
             if dictkey_list[i] == 'theta':
-                dict_input['theta'] = np.random.randint(-10, 10)
-                # dict_input['theta'] = np.random.randint(-5,5)
+                # dict_input['theta'] = np.random.randint(-10, 10)
+                dict_input['theta'] = np.random.randint(-5,5)
 
             elif dictkey_list[i] == 'ty': # width_shift
-                dict_input['ty'] = np.random.randint(-60, 60)
-                # dict_input['ty'] = np.random.randint(-20,20)
+                # dict_input['ty'] = np.random.randint(-60, 60)
+                dict_input['ty'] = np.random.randint(-20,20)
 
             elif dictkey_list[i] == 'tx': # height_shift
-                dict_input['tx'] = np.random.randint(-30, 30)
-                # dict_input['tx'] = np.random.randint(-10,10)
+                # dict_input['tx'] = np.random.randint(-30, 30)
+                dict_input['tx'] = np.random.randint(-10,10)
 
             elif dictkey_list[i] == 'brightness': 
                 dict_input['brightness'] = np.random.uniform(0.15,1)
@@ -181,12 +181,12 @@ class DataGeneratorBKB(keras.utils.Sequence):
                 dict_input['flip_horizontal'] = True
 
             elif dictkey_list[i] == 'zy': # width_zoom
-                dict_input['zy'] = np.random.uniform(0.5,1.5)
-                # dict_input['zy'] = np.random.uniform(0.9,1.3) 
+                # dict_input['zy'] = np.random.uniform(0.5,1.5)
+                dict_input['zy'] = np.random.uniform(0.9,1.3) 
 
             elif dictkey_list[i] == 'zx': # height_zoom
-                dict_input['zx'] = np.random.uniform(0.5,1.5)
-                # dict_input['zx'] = np.random.uniform(0.9,1.3) 
+                # dict_input['zx'] = np.random.uniform(0.5,1.5)
+                dict_input['zx'] = np.random.uniform(0.9,1.3) 
         
         sh = sequence.shape
         new_sequence = np.zeros((sh[0],sh[1],sh[2],sh[3]))
@@ -233,9 +233,9 @@ class DataGeneratorBKB(keras.utils.Sequence):
                     
 
                 if self.type_gen =='train':
-                    X1[i,] = self.sequence_augment(X1[i,])/255.0#*2-1
+                    X1[i,] = self.sequence_augment(X1[i,])/255.0*2-1
                 else:
-                    X1[i,] = X1[i,]/255.0#*2-1
+                    X1[i,] = X1[i,]/255.0*2-1
 
                 # cv2.imshow('imgae',X1[i,0])
                 # cv2.waitKey(2000)

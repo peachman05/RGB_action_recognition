@@ -7,23 +7,23 @@ from data_helper import readfile_to_dict
 # from keras.callbacks.callbacks import Callback
 from keras.callbacks import ModelCheckpoint
 
-dim = (224,224) # เพิ่งเปลี่ยนจาก 120
-n_sequence = 8 # เพิ่งเปลี่ยน จาก 10
+dim = (120,120) # เพิ่งเปลี่ยนจาก 120
+n_sequence = 10 # เพิ่งเปลี่ยน จาก 10
 n_channels = 3
 n_output = 5    
-model_type = ''#'Conv3D'
+model_type = 'Conv3D'
 
-# base_path = 'F:\\Master Project\\'
+base_path = 'F:\\Master Project\\'
 # base_path = 'D:\\Peach\\'
-base_path = '/content/gdrive/My Drive/Colab Notebooks/'
+# base_path = '/content/gdrive/My Drive/Colab Notebooks/'
 # path_dataset = base_path + 'Dataset\\sit_stand\\'
 # path_dataset = base_path + 'Dataset\\BUPT-dataset\\RGBdataset_crop\\'
 # path_dataset = base_path + 'Dataset/BUPT-dataset/RGBdataset/'
 path_dataset = base_path + 'Dataset/sit_stand_crop02/'
-# path_dataset = base_path + 'Dataset/KARD-split/'
+# path_dataset = base_path + 'Dataset/KARD-split_crop/'
 # detail_weight = 'BUPT-2d-equalsplit-RGBdif-half' # final BUPT single person
 #detail_weight = 'BUPT-RGB-Crop-alpha035-dataset02-fixaugment'#'BUPT-RGB-Crop-alpha-addDTS05'
-detail_weight = 'BUPT-RGBdiff-crop-dataset03'#'BUPT-Conv3D-dataset02'
+detail_weight = 'KARD-Conv3D-RGBdiff-crop'#'BUPT-Conv3D-dataset02'
 
 params = {'dim': dim,
           'batch_size': 8,
@@ -61,7 +61,7 @@ validation_generator = DataGeneratorBKB(test_keys, labels, **params, type_gen='t
 
 # # Design model
 if model_type == 'Conv3D':
-    model = create_model_Conv3D(dim, n_sequence, n_channels, n_output)    
+    model = create_model_Conv3D(dim, n_sequence, n_channels, n_output, set_pretrain=True)    
 else:
     model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 1.0)
     
@@ -75,7 +75,7 @@ if load_model:
     model.load_weights(weights_path)
 
 ## Set callback
-validate_freq = 3
+validate_freq = 10
 # filepath= detail_weight+"-{epoch:02d}-{accuracy:.2f}-{val_accuracy:.2f}.hdf5"
 # checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', verbose=1, save_best_only=False, period=validate_freq)
 filepath= detail_weight+"-{epoch:02d}-{acc:.2f}-{val_acc:.2f}.hdf5"
@@ -85,9 +85,9 @@ callbacks_list = [checkpoint]#[ PlotCallbacks()]
 # # Train model on dataset
 model.fit_generator(generator=training_generator,
                     validation_data=validation_generator,
-                    epochs=300,
+                    epochs=1000,
                     callbacks=callbacks_list,   
-                    max_queue_size=1,
+                    # max_queue_size=1,
                     initial_epoch=start_epoch,                 
                     validation_freq=validate_freq,
                     # workers=0

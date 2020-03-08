@@ -7,11 +7,11 @@ import numpy as np
 
 execution_path = os.getcwd()
 detector = ObjectDetection()
-# detector.setModelTypeAsTinyYOLOv3()
-detector.setModelTypeAsYOLOv3()
-# detector.setModelPath( os.path.join(execution_path , "pretrain/yolo-tiny.h5"))
-detector.setModelPath( os.path.join(execution_path , "pretrain/yolo.h5"))
-detector.loadModel(detection_speed="normal") #"normal"(default), "fast", "faster" , "fastest" and "flash".
+detector.setModelTypeAsTinyYOLOv3()
+# detector.setModelTypeAsYOLOv3()
+detector.setModelPath( os.path.join(execution_path , "pretrain/yolo-tiny.h5"))
+# detector.setModelPath( os.path.join(execution_path , "pretrain/yolo.h5"))
+detector.loadModel(detection_speed="flash") #"normal"(default), "fast", "faster" , "fastest" and "flash".
 custom_objects = detector.CustomObjects(person=True)
 
 def walk2(dirname):
@@ -22,10 +22,15 @@ def walk2(dirname):
             list_.append(os.path.join(root, filename))
     return list_
 
-    
-path_dataset = 'F:\\Master Project\\Dataset\\sit_stand\\'
-path_save_dataset = 'F:\\Master Project\\Dataset\\sit_stand_crop02\\peach\\'
-action_list = ['run','sit','stand','standup','walk']
+# base_path = 'F:\\Master Project\\'
+base_path = '/content/gdrive/My Drive/Colab Notebooks/'    
+# path_dataset = 'F:\\Master Project\\Dataset\\sit_stand\\'
+path_dataset = base_path+'/Dataset/KARD-split/'
+# path_save_dataset = 'F:\\Master Project\\Dataset\\sit_stand_crop02\\peach\\'
+path_save_dataset = base_path+'/Dataset/KARD-split_crop/'
+# action_list = ['run','sit','stand','standup','walk']
+action_list = ['a01','a02','a03','a04','a05','a06','a07','a08','a09',
+               'a10','a11','a12','a13','a14','a15','a16','a17','a18']
 # action_list = ['run','walk']
 dim = (224,224)
 

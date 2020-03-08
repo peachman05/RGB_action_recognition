@@ -5,11 +5,11 @@ import seaborn as sn
 import numpy as np
 
 from data_gen_bkb import DataGeneratorBKB 
-from model_ML import create_model_pretrain
+from model_ML import create_model_pretrain, create_model_Conv3D
 from data_helper import readfile_to_dict
 
-dim = (224,224)
-n_sequence = 8
+dim = (120,120)
+n_sequence = 10
 n_channels = 3
 n_output = 5
 # base_path = 'D:\\Peach\\'
@@ -19,7 +19,7 @@ base_path = 'F:\\Master Project\\'
 path_dataset = base_path + 'Dataset\\sit_stand_crop02\\'
 
 params = {'dim': dim,
-          'batch_size': 2,
+          'batch_size': 4,
         #   'n_classes': 6,
           'n_sequence': n_sequence,
           'n_channels': n_channels,
@@ -31,7 +31,7 @@ params = {'dim': dim,
 test_txt = "dataset_list/testlistBUPT_crop02.txt"
 test_d = readfile_to_dict(test_txt)
 labels = test_d.copy()
-num_mul = 3
+num_mul = 4
 print(len(test_d.keys()))
 key_list = list(test_d.keys()) * num_mul
 partition = {'validation': key_list  } # IDs
@@ -42,10 +42,11 @@ predict_generator = DataGeneratorBKB(key_list , labels, **params, type_gen='pred
 # weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
 # weights_path = 'BUPT-RGB-Crop-96-0.92-0.88.hdf5' 
 # weights_path = 'BUPT-RGB-Crop-alpha-035-210-0.93-0.92.hdf5' 
-weights_path = 'BUPT-RGBdiff-crop-dataset02-261-0.98-0.81.hdf5'
+weights_path = 'BUPT-RGBdiff-crop-Conv3D-verytiny-dataset02-1600-0.88-0.77.hdf5'
 # weights_path = 'BUPT-RGB-Crop-alpha-addDTS03-300-0.97-0.63.hdf5'
 
-model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
+# model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
+model = create_model_Conv3D(dim, n_sequence, n_channels, n_output)
 model.load_weights(weights_path)
 
 
