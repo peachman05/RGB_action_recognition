@@ -44,10 +44,10 @@ for i in range(len(action_list)):
     path_save_folder = path_save_dataset + action_list[i]
     list_file = walk2(path_folder)
     for file_path in list_file:        
-        name_file = file_path.split('\\')[-1]
+        name_file = file_path.split('/')[-1]
 
-        path_file = path_folder+'\\'+name_file
-        path_save_file = path_save_folder+'\\'+name_file 
+        path_file = path_folder+'/'+name_file
+        path_save_file = path_save_folder+'/'+name_file 
 
         ### Read
         cap = cv2.VideoCapture(path_file)        
