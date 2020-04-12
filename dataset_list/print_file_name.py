@@ -11,13 +11,17 @@ def walk2(dirname):
 
 # path_dataset = 'F:\\Master Project\\Dataset\\sit_stand\\'
 # path_dataset = 'F:\\Master Project\\Dataset\\BUPT-dataset\\RGBdataset\\'
-path_dataset = 'F:\\Master Project\\Dataset\\sit_stand_crop02\\peach\\'
+# path_dataset = 'F:\\Master Project\\Dataset\\sit_stand_crop02\\peach\\'
+path_dataset = 'F:\\Master Project\\Dataset\\UCF11\\'
 # path_dataset = 'F:\\Master Project\\Dataset\\KARD-split\\'
 
 # list_file = walk2(path_dataset)
 # action_list = ['run','sit','stand','standup','walk']
 # action_list = ['run','sit','stand','walk','standup']
-action_list = ['run','sit','stand','walk','standup']
+action_list = ['basketball','biking', 'diving','golf_swing', 'horse_riding',
+               'soccer_juggling','swing' ,'tennis_swing' ,
+               'trampoline_jumping' ,'volleyball_spiking' ,'walking' ]
+
 # action_list = ['a01','a02','a03','a04','a13','a14']
 # action_list = ['a01','a02','a03','a04','a05','a06','a07','a08','a09',
 #                'a10','a11','a12','a13','a14','a15','a16','a17','a18']
@@ -37,5 +41,6 @@ for file_path in list_file:
     name_folder = name_sp[-2]
     name_bigsub = name_sp[-3]
     name_sum =  name_bigsub+'/'+name_folder+'/'+name_file
-    if extension == 'mp4':
-        print(name_sum, action_id[name_folder] )
+    if extension == 'avi':  #'mp4':
+        # print(name_sum, action_id[name_folder] )
+        print(name_sum, action_id[name_bigsub] )

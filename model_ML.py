@@ -114,11 +114,11 @@ def create_model_pretrain(dim, n_sequence, n_channels, n_output, alpha):
     model.add(
         CuDNNLSTM(64, return_sequences=False)
     )
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(.5))
+    # model.add(Dense(64, activation='relu'))
+    # model.add(Dropout(.5))
 
     model.add(Dense(24, activation='relu'))
-    model.add(Dropout(.5))
+    model.add(Dropout(.4))
     # model.add(Dense(n_output))
     model.add(Dense(n_output, activation='softmax'))
 

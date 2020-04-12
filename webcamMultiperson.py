@@ -8,11 +8,12 @@ from imageai.Detection import ObjectDetection
 dim = (120,120)
 n_sequence = 10
 n_channels = 3
-n_output = 5
+n_output = 18 #5
 
 # weights_path = 'BUPT-2d-equalsplit-RGBdif-72-0.98-0.90.hdf5' 
 #weights_path =  'BUPT-RGB-Crop-96-0.92-0.88.hdf5' 
-weights_path = 'BUPT-RGBdiff-crop-Conv3D-verytiny-dataset02-1160-0.85-0.79.hdf5' 
+# weights_path = 'BUPT-RGBdiff-crop-Conv3D-verytiny-dataset02-1160-0.85-0.79.hdf5' 
+weights_path = 'KARD-Conv3D-RGBdiff-crop-1810-0.80-0.85.hdf5'
 ### load model
 # model = create_model_pretrain(dim, n_sequence, n_channels, n_output, 'MobileNetV2')
 model = create_model_Conv3D(dim, n_sequence, n_channels, n_output) 
@@ -30,7 +31,9 @@ state = RUN_STATE #
 previous_action = -1 # no action
 text_show = 'no action'
 
-class_text = ['run','sit','stand','walk','standup']
+# class_text = ['run','sit','stand','walk','standup']
+class_text = ['a01','a02','a03','a04','a05','a06','a07','a08','a09',
+               'a10','a11','a12','a13','a14','a15','a16','a17','a18']
 
 ### ImageAI
 model_path = "pretrain/yolo-tiny.h5"

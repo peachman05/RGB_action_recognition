@@ -1,48 +1,77 @@
-from imageai.Detection import ObjectDetection
-import os
-import tensorflow as tf
 import cv2
+import numpy as np
+import time
+from keras.preprocessing import image
 
-# gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
-# sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
-execution_path = os.getcwd()
+def get_sampling_frame( len_frames, path_video):   
+  '''
+  Sampling n_sequence frame from video file
+  Input: 
+      len_frames -- number of frames that this video have
+  Output: 
+      index_sampling -- n_sequence frame indexs from sampling algorithm 
+  '''
+  n_sequence = 10
+  dim = (120,120)
 
-detector = ObjectDetection()
-# detector.setModelTypeAsTinyYOLOv3()
-detector.setModelTypeAsYOLOv3()
-# detector.setModelTypeAsRetinaNet() 
-# detector.setModelPath( os.path.join(execution_path , "yolo-tiny.h5"))
-detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
-# detector.setModelPath( os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
-detector.loadModel(detection_speed="fast")#detection_speed="fast"
+  if True:#type_gen =='train':
+      random_sample_range = 10
+      if random_sample_range*n_sequence > len_frames:
+          random_sample_range = len_frames//n_sequence
 
-action = 'standup'
-path_file = 'F:\\Master Project\\Dataset\\sit_stand\\'+action+'\\'+action+'00_02.mp4'
-cap = cv2.VideoCapture(path_file)
-dim = (224,224)
-for i in range(80):
-    ret, frame = cap.read()
+      if random_sample_range <= 0:
+          print('test:',random_sample_range, len_frames, path_video)
+      # Randomly choose sample interval and start frame
+      if random_sample_range < 3:
+          sample_interval = np.random.randint(1, random_sample_range + 1)
+      else:
+          sample_interval = np.random.randint(3, random_sample_range + 1)
 
-    detect_image, detections, extract_picture = detector.detectObjectsFromImage(input_type="array", input_image=frame, output_type='array', 
-                                                 minimum_percentage_probability=10, extract_detected_objects = True )
-    print('round:',i)
+      start_i = np.random.randint(0, len_frames - sample_interval * n_sequence + 1)
+  
+  # Get n_sequence index of frames
+  index_sampling = []
+  end_i = sample_interval * n_sequence + start_i
+  for i in range(start_i, end_i, sample_interval):
+      if len(index_sampling) < n_sequence:
+          index_sampling.append(i)
+  
+  return index_sampling
 
-    max_prob = 0
-    max_idx = 0
-    for i,eachObject in enumerate(detections):
-        if eachObject["name"] == 'person' and eachObject["percentage_probability"] > max_prob:
-            max_prob = eachObject["percentage_probability"]
-            max_idx = i
-            print(eachObject["name"] , " : ", eachObject["percentage_probability"], " : ",
-              eachObject["box_points"] )
-            print("--------------------------------")
-    # for eachObject in detections:'
-    crop_img = extract_picture[max_idx]
-    new_image = cv2.resize(crop_img, dim)
-    # new_image = new_image/255.0
+
+
+path_video = "C:/Users/peachman/Desktop/jogging.mp4"
+path_image = ["C:/Users/peachman/Desktop/sky1.jpg",
+              "C:/Users/peachman/Desktop/sky2.jpg"]
+
+start_time = time.time()
+cap = cv2.VideoCapture(path_video)    
+print('open video:', time.time() - start_time) # 0.01
+
+start_time = time.time()
+# image = cv2.imread(path_image) 
+img = image.load_img(path_image[0])
+print('open image:', time.time() - start_time) # 0.04
+
+length_file = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) # get how many frames this video have ,-1 because some bug          
     
-    cv2.imshow('Frame',new_image)
-    cv2.waitKey(15)
+index_sampling = get_sampling_frame(length_file, path_video) # get sampling index  
 
-print("finish!")
+
+for j, n_pic in enumerate(index_sampling):
+  start_time = time.time()
+  cap.set(cv2.CAP_PROP_POS_FRAMES, n_pic) # jump to that index
+  # print(time.time() - start_time) # set avg 0.012  
+  ret, frame = cap.read()
+  # print(time.time() - start_time) # 0.0015  , avg all = 0.01-0.016
+
+  # start_time = time.time()
+  # image = cv2.imread(path_image[j%2]) # 0.04
+  # img = image.load_img(path_image[j%2]) # 0.00099
+  print(time.time() - start_time) 
+    # frame = get_crop_img(frame)
+    # new_image = cv2.resize(frame, dim)
+    # new_image = frame
+    # new_image = new_image/255.0                
+    # X1[i,j,:,:,:] = new_image
